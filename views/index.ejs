@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ACC - Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-info sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-text mx-2">Automatic Crop Caretaker</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Statistics
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" href="/charts">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Charts</span></a>
+            </li>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="/tables">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Tables</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+            <!-- Sidebar Message -->
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+                    <form
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-info" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-info" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="usernamespan"><%= firstname %> <%= lastname %></span>
+                                <img class="img-profile rounded-circle"
+                                    src="img/undraw_profile.svg">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
+                            <i class="fas fa-sync-alt fa-sm text-white-50"></i>
+                            Update Statistics
+                        </a>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+                        <!-- Pending Requests Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                rainfall (last 1h)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="divrainfall">#</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-cloud-rain fa-3x"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1" >
+                                                temperature</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="divtemperature">#</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-thermometer-half fa-3x"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1" >
+                                                air humidity</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="divhumidity">#</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-tint fa-3x"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1" >
+                                                pH</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="divph">#</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-flask fa-3x"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1" >
+                                                Nitrogen</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="divnitrogen">#</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-seedling fa-3x"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1" >
+                                                Phosphorus</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="divphosphorus">#</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-seedling fa-3x"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1" >
+                                                Kali(Potassium)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="divkali">#</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-seedling fa-3x"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Soil moisture</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="divmoisture">#</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-tint fa-3x"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Accordion -->
+                        <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse"
+                            role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                            <h6 class="m-0 font-weight-bold text-info" id="divrecommended">The recommended crop is #</h6>
+                        </a>
+                        <!-- Card Content - Collapse -->
+                        <div class="collapse show" id="collapseCardExample">
+                            <div class="card-body">
+                                This is a prediction based on the amount of N, P, K in the soil along with humidity, rainfall, temperature and the soil's pH level.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+
+                    <div class="row">
+
+                        <!-- Content Column -->
+                        <div class="col-xl-6 col-lg-6 mb-4">
+                            <div class="card shadow mb-4">
+                                <a href="#collapseCard1" class="d-block card-header py-3" data-toggle="collapse"
+                                    role="button" aria-expanded="true" aria-controls="collapseCard1">
+                                    <h6 class="m-0 font-weight-bold text-info" id="divrecommended">Fertilizer recommendation</h6>
+                                </a>
+                                <div class="collapse show" id="collapseCard1">
+                                    <div class="card-body">
+                                        <form id="cropForm">
+                                        <div class="form-group">
+                                            <label for="cropInput" style="font-weight: bold; color: #333;">Crop</label>
+                                            <select class="form-control" id="cropInput" required>
+                                                <option value="" disabled selected>Select Crop</option>
+                                                <option value="Maize">Maize</option>
+                                                <option value="Sugarcane">Sugarcane</option>
+                                                <option value="Cotton">Cotton</option>
+                                                <option value="Tobacco">Tobacco</option>
+                                                <option value="Paddy">Paddy</option>
+                                                <option value="Barley">Barley</option>
+                                                <option value="Wheat">Wheat</option>
+                                                <option value="Millets">Millets</option>
+                                                <option value="Oilseeds">Oilseeds</option>
+                                                <option value="Pulses">Pulses</option>
+                                                <option value="Groundnuts">Groundnuts</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="soilInput" style="font-weight: bold; color: #333;">Soil</label>
+                                            <select class="form-control" id="soilInput" required>
+                                                <option value="" disabled selected>Select Soil Type</option>
+                                                <option value="Sandy">Sandy</option>
+                                                <option value="Loamy">Loamy</option>
+                                                <option value="Black">Black</option>
+                                                <option value="Red">Red</option>
+                                                <option value="Clayey">Clayey</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                        </form>
+                                        <div class="card-body" style="margin-bottom: 20px;">
+                                            <h4 id="divfertilizer" style="display: none;"></h4>
+                                            <p class="mb-0"><small>Disclaimer: The following model predictions and recommendations are provided for informational purposes only and should not be taken as absolute or definitive advice. Consulting with local agricultural experts, conducting thorough research, and considering your specific circumstances before making any decisions related to crop selection or fertilizer usage is strongly recommended. </small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pie Chart -->
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-4">
+                                <a href="#collapseCard2" class="d-block card-header py-3" data-toggle="collapse"
+                                    role="button" aria-expanded="true" aria-controls="collapseCard2">
+                                    <h6 class="m-0 font-weight-bold text-info" id="divrecommended">N,P,K proportion in soil</h6>
+                                </a>
+                                <div class="collapse show" id="collapseCard2">
+                                    <div class="card-body">
+                                        <div class="chart-pie pt-4 pb-2">
+                                            <canvas id="NPKpiechart"></canvas>
+                                            <p id="noDataMessage" class="text-center" style="display: none;">No N, P, K data available.</p>
+                                        </div>
+                                        <div class="mt-4 text-center small">
+                                            <span class="mr-2">
+                                                <i class="fas fa-circle text-info"></i> N
+                                            </span>
+                                            <span class="mr-2">
+                                                <i class="fas fa-circle text-success"></i> P
+                                            </span>
+                                            <span class="mr-2">
+                                                <i class="fas fa-circle text-info"></i> K
+                                            </span>
+                                        </div>
+                                        <div class="card-body" style="margin-bottom: 5px; text-align: center;">
+                                            Updated constantly. N(Nitrogen), K(Potassium), P(Phosphorus).
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12 mb-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-info">Approach to automatic agriculture</h6>
+                                </div>
+                                <div class="card-body" style="background-color: #f8f8f8; border-radius: 25px; margin-bottom: 20px; animation: slideUp 1s ease;">
+                                    <div class="text-center">
+                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 23rem; box-shadow: 0px 3px 5px rgba(0,0,0,0.2); animation: fadeIn 1s ease;"
+                                            src="https://th.bing.com/th/id/OIP.PbMTRMj9x-Vvwl5vzmUXCgHaE8?pid=ImgDet&rs=1" alt="Smart Farming Image 1">
+                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 23rem; box-shadow: 0px 3px 5px rgba(0,0,0,0.2); animation: fadeIn 1s ease 0.2s;"
+                                            src="https://th.bing.com/th/id/R.27444c865fcc73301ae3854515bcf9c4?rik=m4mwyNQ9LKs4rA&pid=ImgRaw&r=0" alt="Smart Farming Image 2">
+                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 23rem; box-shadow: 0px 3px 5px rgba(0,0,0,0.2); animation: fadeIn 1s ease 0.4s;"
+                                            src="https://th.bing.com/th/id/OIP.KnG_EXzhNs6cu7GaRpSy7AHaE8?pid=ImgDet&rs=1" alt="Smart Farming Image 3">
+                                    </div>
+                                    <p style="font-family: 'Arial', sans-serif; font-size: 18px; line-height: 1.6; animation: fadeIn 1s ease 0.6s;">
+                                        Automatic agriculture, also known as smart farming, utilizes advanced technologies like IoT and data analytics to optimize crop production and resource management. Through real-time monitoring of environmental factors and data-driven insights, farmers can make informed decisions about irrigation, fertilization, and pest control. This approach maximizes efficiency, minimizes resource wastage, and contributes to sustainable and high-yield agricultural practices.
+                                    </p>
+                                    <a href="#" style="font-family: 'Arial', sans-serif; font-size: 16px; color: #007bff; animation: fadeIn 1s ease 0.8s;">Learn more</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; HNM Website 2023</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-info" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <!-- <script src="js/demo/chart-area-demo.js"></script> -->
+    <!-- <script src="js/demo/chart-pie-demo.js"> -->
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module">
+        axios.defaults.withCredentials = true;
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+        function handleLogout() {
+        axios.post('/api/logout')
+            .then(() => {
+            window.location.href = '/';
+            })
+            .catch((error) => {
+            console.error('Logout failed:', error);
+            });
+        }
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
+        import { getDatabase, ref, child, get, onValue } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+        // import { response } from "express";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyBCqLto76Wdu4gCojSE9XoF1idZYXL6vYM",
+            authDomain: "quan-trac-dat-prj.firebaseapp.com",
+            databaseURL: "https://quan-trac-dat-prj-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "quan-trac-dat-prj",
+            storageBucket: "quan-trac-dat-prj.appspot.com",
+            messagingSenderId: "735004170493",
+            appId: "1:735004170493:web:65e90332a7bcd259bf8694"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getDatabase(app);
+        const dbRef = ref(getDatabase());
+
+
+        let myChartPie;
+        let chartDataPie = [];
+        let airHumidity;
+        let Rainfall;
+
+
+        onValue(child(dbRef, "Soil parameter"), (snapshot) => {
+            // Lấy giá trị mới nhất từ snapshot
+            const Potassium = snapshot.val().Potassium
+            const Nitrogen = snapshot.val().Nitrogen
+            const Phosphorus = snapshot.val().Phosphorus
+            const canvas = document.getElementById('NPKpiechart');
+            const noDataMessage = document.getElementById('noDataMessage');
+            if (Potassium && Nitrogen && Phosphorus){
+            // Thêm giá trị mới vào mảng dữ liệu của biểu đồ
+            chartDataPie = [Nitrogen, Phosphorus, Potassium]
+            // Vẽ biểu đồ với dữ liệu mới nhất
+            if (myChartPie) {
+                myChartPie.destroy();
+            }
+
+            myChartPie = new Chart('NPKpiechart', {
+                type: 'doughnut',
+                data: {
+                    labels: ["N","P","K"],
+                    datasets: [{
+                        label: 'My Data',
+                        data: chartDataPie,
+                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }],
+                },
+                options: {
+                    animation: {
+                        duration: 0 // Disable animation during chart creation
+                    },
+                    maintainAspectRatio: false,
+                    tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                    },
+                    legend: {
+                    display: false
+                    },
+                    cutoutPercentage: 80,
+                },
+            });} else {
+                noDataMessage.style.display = 'block';
+                canvas.style.display = 'none';
+            }
+        });
+
+        let chartDataTemp = [];
+        let chartDataHumi = [];
+        let chartDataPh = [];
+        let chartDataNito = [];
+        let chartDataPhotpho = [];
+        let chartDataKali = [];
+        setInterval(function () {
+            get(child(dbRef, "Soil parameter")).then((snapshot) => {
+                if (snapshot.exists()) {
+                    document.getElementById('divnitrogen').textContent = `${snapshot.val().Nitrogen} mg/kg`;
+                    document.getElementById('divkali').textContent = `${snapshot.val().Potassium} mg/kg`;
+                    document.getElementById('divphosphorus').textContent = `${snapshot.val().Phosphorus} mg/kg`;
+                    document.getElementById('divtemperature').textContent = `${snapshot.val().Temperature} °C`;
+                    document.getElementById('divmoisture').textContent = `${snapshot.val().Humidity} %`;
+                    document.getElementById('divph').textContent = `${snapshot.val().Ph}`;
+
+                    const newDataHumi = snapshot.val().Humidity;
+                    chartDataHumi.push(newDataHumi);
+                    if (chartDataHumi.length > 20) {
+                    chartDataHumi.shift();
+                    }
+
+                    const newDataTemp = snapshot.val().Temperature;
+                    chartDataTemp.push(newDataTemp);
+                    if (chartDataTemp.length > 20) {
+                    chartDataTemp.shift();
+                    }
+
+                    const newDataPh = snapshot.val().pH;
+                    chartDataPh.push(newDataPh);
+                    if (chartDataPh.length > 20) {
+                    chartDataPh.shift();
+                    }
+
+                    const newDataNito = snapshot.val().N;
+                    chartDataNito.push(newDataNito);
+                    if (chartDataNito.length > 20) {
+                    chartDataNito.shift();
+                    }
+
+                    const newDataPhotpho = snapshot.val().Photpho;
+                    chartDataPhotpho.push(newDataPhotpho);
+                    if (chartDataPhotpho.length > 20) {
+                    chartDataPhotpho.shift();
+                    }
+
+                    const newDataKali = snapshot.val().K;
+                    chartDataKali.push(newDataKali);
+                    if (chartDataKali.length > 20) {
+                    chartDataKali.shift();
+                    }
+                } else {
+                    console.log("No data available");
+                }
+            }).catch((error) => {
+                console.error(error);
+
+            });
+            function pollForChartData() {
+                axios.post('/sendChartData', {
+                    temp: chartDataTemp,
+                    humi: chartDataHumi,
+                    ph: chartDataPh,
+                    nito: chartDataNito,
+                    photpho: chartDataPhotpho,
+                    kali: chartDataKali
+                }).then(response => {
+                    console.log('Chart data sent successfully:', response.data);
+                    setTimeout(pollForChartData, 5000)
+                }).catch(error => {
+                    console.error('Error sending chart data:', error);
+                    setTimeout(pollForChartData, 5000)
+                });
+            }
+            pollForChartData();
+        }, 0)
+
+        onValue(child(dbRef, "Soil parameter"), (snapshot) => {
+            const data = snapshot.val()
+            axios.post('/api/getweather', {temperature:data.Temperature, pH:data.Ph, N:data.Nitrogen,P:data.Phosphorus,K:data.Potassium})
+            .then(function(response){
+                const weatherdata = response.data;
+                Rainfall = weatherdata[0];
+                airHumidity = weatherdata[1];
+                console.log(weatherdata)
+                document.getElementById('divrainfall').textContent = `${weatherdata[0]} mm`
+                document.getElementById('divhumidity').textContent = `${weatherdata[1]} %`
+                document.getElementById('divrecommended').innerHTML = `The recommended crop is <strong>${weatherdata[2].toUpperCase()}</strong>`
+            }).catch(function(error){console.error('Data retrieval error:', error)})
+        });
+
+        onValue(child(dbRef, "Soil parameter"), (snapshot) => {
+            document.getElementById('cropForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const cropInput = document.getElementById('cropInput');
+                const selectedCrop = cropInput.value;
+                const soilInput = document.getElementById('soilInput');
+                const selectedSoil = soilInput.value;
+                let fertilizer;
+                const data = snapshot.val()
+                axios.post('/api/tests/crops', {temperature:data.Temperature, pH:data.Ph, N:data.Nitrogen,P:data.Phosphorus,K:data.Potassium, soiltype:selectedSoil, croptype:selectedCrop, moisture:data.Humidity, rainfall: Rainfall,humidity: airHumidity, })
+                    .then((response) => {
+                        fertilizer = response.data;
+                        const recommendation = `Based on your inputs and analysis, for crop type "<strong>${selectedCrop}</strong>" and soil type "<strong>${selectedSoil}</strong>", we recommend using "<strong>${fertilizer}</strong>" fertilizer.`;
+                        const recommendationElement = document.getElementById('divfertilizer');
+                        recommendationElement.innerHTML = recommendation;
+                        recommendationElement.style.display = 'block';
+                    })
+                    .catch((err) => {console.err(err)})
+            });
+        });
+    </script> 
+</body>
+
+</html>
