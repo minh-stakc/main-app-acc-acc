@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ACC - Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-info sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
+                <div class="sidebar-brand-text mx-2">Automatic Crop Caretaker</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="/dashboard">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <!-- Divider -->
+
+
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Modes
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/manual">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Manual</span></a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Statistics
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" href="/charts">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Charts</span></a>
+            </li>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="/tables">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Tables</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+            <!-- Sidebar Message -->
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+                    <form
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-info" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-info" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="usernamespan"><%= firstname %> <%= lastname %></span>
+                                <img class="img-profile rounded-circle"
+                                    src="img/undraw_profile.svg">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                
+
+                
+                <div class="container-fluid">
+
+
+                    <h1>Device Control</h1>
+
+
+                    <h1>Drive Base Control</h1>
+
+                    <!-- Drive Base Control -->
+                    <button id="forwardButton">Forward</button>
+                    <button id="backwardButton">Backward</button>
+                    <button id="stopButton">Stop</button>
+                    
+                    <h2>Motor Status:</h2>
+                    <span id="motorStatus">Stopped</span>
+
+                     <!-- Cylinder Control -->
+                    <h2>Cylinder Control</h2>
+                    <label>Cylinder Status:</label>
+                    <button id="cylinderUpButton">Up</button>
+                    <button id="cylinderDownButton">Down</button>
+                    <button id="cylinderStopButton">Stop</button>
+                    
+                    <h2>Motor Status:</h2>
+                    <span id="motorStatus">Stopped</span>
+
+
+    
+                    <!-- LED Control -->
+                    <h2>LED Control</h2>
+                    <label>LED Status:</label>
+                    <span id="ledStatus">OFF</span>
+                    <button id="toggleLedButton">Toggle LED</button>
+                
+                    <!-- Pump Control -->
+                    <h2>Pump Control</h2>
+                    <label>Pump Status:</label>
+                    <span id="pumpStatus">OFF</span>
+                    <button id="togglePumpButton">Toggle Pump</button>
+
+
+
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; HNM Website 2023</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    <script>
+         
+        
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+
+
+            const toggleLedButton = document.getElementById('toggleLedButton');
+            const ledStatus = document.getElementById('ledStatus');
+            let ledOn = false;
+            const togglePumpButton = document.getElementById('togglePumpButton');
+            const pumpStatus = document.getElementById('pumpStatus');
+            let pumpOn = false;
+            const forwardButton = document.getElementById('forwardButton');
+            const backwardButton = document.getElementById('backwardButton');
+            const stopButton = document.getElementById('stopButton');
+            const motorStatus = document.getElementById('motorStatus');
+            let motorState = 'Stopped';
+            const toggleCylinderButton = document.getElementById('toggleCylinderButton');
+            const cylinderStatus = document.getElementById('cylinderStatus');
+            let cylinderExtended = false;
+            const socket = new WebSocket("ws://localhost:81/ws");
+            
+            socket.addEventListener("open", () => {
+            console.log("WebSocket connection opened");
+            });
+
+            socket.addEventListener("message", (event) => {
+                console.log("Message received from server:", event.data);
+            });
+
+            toggleLedButton.addEventListener('click', () => {
+                if (ledOn) {
+                    // Turn off the LED
+                    turnOffLED();
+                } else {
+                    // Turn on the LED
+                    turnOnLED();
+                }
+
+                // Toggle the LED status
+                ledOn = !ledOn;
+                ledStatus.textContent = ledOn ? 'ON' : 'OFF';
+            });
+            togglePumpButton.addEventListener('click', () => {
+                if (pumpOn) {
+                    // Turn off the pump
+                    turnOffPump();
+                } else {
+                    // Turn on the pump
+                    turnOnPump();
+                }
+
+                // Toggle the pump status
+                pumpOn = !pumpOn;
+                pumpStatus.textContent = pumpOn ? 'ON' : 'OFF';
+            });
+            forwardButton.addEventListener('click', () => {
+                // Drive base forward
+                driveForward();
+                // Update motor status
+                motorStatus.textContent = 'Running Forward';
+                motorState = 'Running Forward';
+            });
+            backwardButton.addEventListener('click', () => {
+                // Drive base backward
+                driveBackward();
+                // Update motor status
+                motorStatus.textContent = 'Running Backward';
+                motorState = 'Running Backward';
+            });
+            stopButton.addEventListener('click', () => {
+                // Stop the drive base
+                stopDrive();
+                // Update motor status
+                motorStatus.textContent = 'Stopped';
+                motorState = 'Stopped';
+            });
+            toggleCylinderButton.addEventListener('click', () => {
+                if (cylinderExtended) {
+                    // Retract the cylinder
+                    retractCylinder();
+                } else {
+                    // Extend the cylinder and wait for 20 seconds
+                    extendCylinder();
+                    setTimeout(() => {
+                        // After 20 seconds, retract the cylinder
+                        retractCylinder();
+                        cylinderStatus.textContent = 'Retracted';
+                        cylinderExtended = false;
+                    }, 20000); // 20 seconds in milliseconds
+                }
+
+                // Toggle the cylinder status
+                cylinderExtended = !cylinderExtended;
+                cylinderStatus.textContent = cylinderExtended ? 'Extended' : 'Retracted';
+            });
+        
+        function extendCylinder() {
+            const data = {
+                    type: "control/cylinder",
+                    direction : 1,
+                };
+            socket.send(JSON.stringify(data));
+            console.log('Cylinder is Extended');
+        }
+
+        function retractCylinder() {
+            const data = {
+                    type: "control/cylinder",
+                    direction : 0,
+                };
+            socket.send(JSON.stringify(data));
+            console.log('Cylinder is Retracted');
+        }
+
+        function driveForward() {
+            const data = {
+                    type: "control/both_motors",
+                    direction : 2,
+                };
+            socket.send(JSON.stringify(data));
+            console.log('Drive base is moving forward');
+        }
+
+        function driveBackward() {
+            const data = {
+                    type: "control/both_motors",
+                    direction : 0,
+                };
+            socket.send(JSON.stringify(data));
+            console.log('Drive base is moving backward');
+        }
+
+        function stopDrive() {
+            const data = {
+                    type: "control/both_motors",
+                    direction : 1,
+                };
+            socket.send(JSON.stringify(data));
+            console.log('Drive base is stopped');
+        }
+
+        function turnOnPump() {
+            const data = {
+                    type: "control/pump",
+                    direction : 1,
+                };
+            socket.send(JSON.stringify(data));
+            console.log('Pump is ON');
+        }
+
+        function turnOffPump() {
+            const data = {
+                    type: "control/pump",
+                    direction : 0,
+                };
+            socket.send(JSON.stringify(data));
+            console.log('Pump is OFF');
+        }
+
+        function turnOnLED() {
+            const data = {
+                    type: "control/led",
+                    direction : 1,
+                };
+            socket.send(JSON.stringify(data));
+            console.log('LED is ON');
+        }
+
+        function turnOffLED() {
+            const data = {
+                    type: "control/led",
+                    direction : 0,
+                };
+            socket.send(JSON.stringify(data));
+            console.log('LED is OFF');
+        }
+    });
+    </script>
+</body>
+</html>
