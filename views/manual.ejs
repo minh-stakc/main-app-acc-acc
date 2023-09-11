@@ -158,9 +158,11 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="usernamespan"><%= firstname %> <%= lastname %></span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="usernamespan">
+                                    <%= firstname %>
+                                        <%= lastname %>
+                                </span>
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -168,19 +170,19 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
                             </div>
                         </li>
                     </ul>
                 </nav>
                 <!-- End of Topbar -->
-                
 
-                
+
+
                 <div class="container-fluid">
 
 
@@ -193,28 +195,28 @@
                     <button id="forwardButton">Forward</button>
                     <button id="backwardButton">Backward</button>
                     <button id="stopButton">Stop</button>
-                    
+
                     <h2>Motor Status:</h2>
                     <span id="motorStatus">Stopped</span>
 
-                     <!-- Cylinder Control -->
+                    <!-- Cylinder Control -->
                     <h2>Cylinder Control</h2>
                     <label>Cylinder Status:</label>
                     <button id="cylinderUpButton">Up</button>
                     <button id="cylinderDownButton">Down</button>
                     <button id="cylinderStopButton">Stop</button>
-                    
+
                     <h2>Motor Status:</h2>
                     <span id="motorStatus">Stopped</span>
 
 
-    
+
                     <!-- LED Control -->
                     <h2>LED Control</h2>
                     <label>LED Status:</label>
                     <span id="ledStatus">OFF</span>
                     <button id="toggleLedButton">Toggle LED</button>
-                
+
                     <!-- Pump Control -->
                     <h2>Pump Control</h2>
                     <label>Pump Status:</label>
@@ -241,12 +243,12 @@
     </div>
     <!-- End of Page Wrapper -->
     <script>
-         
-        
+
+
 
         document.addEventListener('DOMContentLoaded', () => {
-            
 
+            // const socket =  new WebSocket("ws://localhost:81/ws");
 
             const toggleLedButton = document.getElementById('toggleLedButton');
             const ledStatus = document.getElementById('ledStatus');
@@ -259,13 +261,16 @@
             const stopButton = document.getElementById('stopButton');
             const motorStatus = document.getElementById('motorStatus');
             let motorState = 'Stopped';
-            const toggleCylinderButton = document.getElementById('toggleCylinderButton');
+            const cylinderUpButton = document.getElementById('cylinderUpButton');
+            const cylinderDownButton = document.getElementById('cylinderDownButton');
+            const cylinderStopButton = document.getElementById('cylinderStopButton');
             const cylinderStatus = document.getElementById('cylinderStatus');
             let cylinderExtended = false;
-            const socket = new WebSocket("ws://localhost:81/ws");
-            
+
+            const socket = new WebSocket("ws://localhost:4000/ws");
+
             socket.addEventListener("open", () => {
-            console.log("WebSocket connection opened");
+                console.log("WebSocket connection opened");
             });
 
             socket.addEventListener("message", (event) => {
@@ -319,107 +324,139 @@
                 motorStatus.textContent = 'Stopped';
                 motorState = 'Stopped';
             });
-            toggleCylinderButton.addEventListener('click', () => {
-                if (cylinderExtended) {
-                    // Retract the cylinder
-                    retractCylinder();
-                } else {
-                    // Extend the cylinder and wait for 20 seconds
-                    extendCylinder();
-                    setTimeout(() => {
-                        // After 20 seconds, retract the cylinder
-                        retractCylinder();
-                        cylinderStatus.textContent = 'Retracted';
-                        cylinderExtended = false;
-                    }, 20000); // 20 seconds in milliseconds
-                }
 
-                // Toggle the cylinder status
-                cylinderExtended = !cylinderExtended;
-                cylinderStatus.textContent = cylinderExtended ? 'Extended' : 'Retracted';
+            // cylinderUpButton.addEventListener('click', () => {
+            //     if (cylinderExtended) {
+            //         // Retract the cylinder
+            //         retractCylinder();
+            //     } else {
+            //         // Extend the cylinder and wait for 20 seconds
+            //         extendCylinder();
+            //         setTimeout(() => {
+            //             // After 20 seconds, retract the cylinder
+            //             retractCylinder();
+            //             cylinderStatus.textContent = 'Retracted';
+            //             cylinderExtended = false;
+            //         }, 20000); // 20 seconds in milliseconds
+            //     }
+
+            //     // Toggle the cylinder status
+            //     cylinderExtended = !cylinderExtended;
+            //     cylinderStatus.textContent = cylinderExtended ? 'Extended' : 'Retracted';
+            // });
+
+            cylinderUpButton.addEventListener('click', () => {
+                // Drive base forward
+                retractCylinder();
+                // Update motor status
+                motorStatus.textContent = 'retracting cylinder';
             });
-        
-        function extendCylinder() {
-            const data = {
+            
+            cylinderDownButton.addEventListener('click', () => {
+                // Drive base forward
+                extendCylinder();
+                // Update motor status
+                motorStatus.textContent = 'extending cylinder';
+            });
+
+            cylinderStopButton.addEventListener('click', () => {
+                // Drive base forward
+                stopCylinder();
+                // Update motor status
+                motorStatus.textContent = 'stopping cylinder';
+            });
+
+            function extendCylinder() {
+                const data = {
                     type: "control/cylinder",
-                    direction : 1,
+                    direction: 2,
                 };
-            socket.send(JSON.stringify(data));
-            console.log('Cylinder is Extended');
-        }
+                socket.send(JSON.stringify(data));
+                console.log('Cylinder is Extended');
+            }
 
-        function retractCylinder() {
-            const data = {
+            function retractCylinder() {
+                const data = {
                     type: "control/cylinder",
-                    direction : 0,
+                    direction: 0,
                 };
-            socket.send(JSON.stringify(data));
-            console.log('Cylinder is Retracted');
-        }
+                socket.send(JSON.stringify(data));
+                console.log('Cylinder is Retracted');
+            }
 
-        function driveForward() {
-            const data = {
+            function stopCylinder() {
+                const data = {
+                    type: "control/cylinder",
+                    direction: 1,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('Cylinder is Stopped');
+            }
+
+            function driveForward() {
+                const data = {
                     type: "control/both_motors",
-                    direction : 2,
+                    direction: 2,
                 };
-            socket.send(JSON.stringify(data));
-            console.log('Drive base is moving forward');
-        }
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is moving forward');
+            }
 
-        function driveBackward() {
-            const data = {
+            function driveBackward() {
+                const data = {
                     type: "control/both_motors",
-                    direction : 0,
+                    direction: 0,
                 };
-            socket.send(JSON.stringify(data));
-            console.log('Drive base is moving backward');
-        }
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is moving backward');
+            }
 
-        function stopDrive() {
-            const data = {
+            function stopDrive() {
+                const data = {
                     type: "control/both_motors",
-                    direction : 1,
+                    direction: 1,
                 };
-            socket.send(JSON.stringify(data));
-            console.log('Drive base is stopped');
-        }
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is stopped');
+            }
 
-        function turnOnPump() {
-            const data = {
+            function turnOnPump() {
+                const data = {
                     type: "control/pump",
-                    direction : 1,
+                    direction: 1,
                 };
-            socket.send(JSON.stringify(data));
-            console.log('Pump is ON');
-        }
+                socket.send(JSON.stringify(data));
+                console.log('Pump is ON');
+            }
 
-        function turnOffPump() {
-            const data = {
+            function turnOffPump() {
+                const data = {
                     type: "control/pump",
-                    direction : 0,
+                    direction: 0,
                 };
-            socket.send(JSON.stringify(data));
-            console.log('Pump is OFF');
-        }
+                socket.send(JSON.stringify(data));
+                console.log('Pump is OFF');
+            }
 
-        function turnOnLED() {
-            const data = {
+            function turnOnLED() {
+                const data = {
                     type: "control/led",
-                    direction : 1,
+                    direction: 1,
                 };
-            socket.send(JSON.stringify(data));
-            console.log('LED is ON');
-        }
+                socket.send(JSON.stringify(data));
+                console.log('LED is ON');
+            }
 
-        function turnOffLED() {
-            const data = {
+            function turnOffLED() {
+                const data = {
                     type: "control/led",
-                    direction : 0,
+                    direction: 0,
                 };
-            socket.send(JSON.stringify(data));
-            console.log('LED is OFF');
-        }
-    });
+                socket.send(JSON.stringify(data));
+                console.log('LED is OFF');
+            }
+        });
     </script>
 </body>
+
 </html>

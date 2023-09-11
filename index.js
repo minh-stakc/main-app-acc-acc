@@ -14,6 +14,9 @@ const bcryptSalt =  bcrypt.genSaltSync(10);
 const jwtSecret = 'f8u230f20u203f20i3o';
 const APIkey = 'd19a1eac74129a54df64265af607e433';
 
+const expressWs = require("express-ws");
+expressWs(app);
+const clientConnections = [];
 
 let chartDataTemp = [];
 let chartDataHumi = [];
@@ -29,6 +32,28 @@ app.use(cors({
     credentials: true,
     origin: ['http://localhost:4000'],
 }));
+
+// WebSocket route for communication with ESP8266
+app.ws("/ws", (ws, req) => {
+  console.log("WebSocket connection established");
+  clientConnections.push(ws);
+  ws.on("message", (msg) => {
+    console.log("Message from client:", msg);
+    const data = JSON.parse(msg);
+    if(data.type == "sensors_data"){
+      sensors_data = data;
+    }
+    console.log(data);
+    sendEventToClients(data);
+  });
+});
+
+function sendEventToClients(eventData) {
+  for (const connection of clientConnections) {
+    connection.send(JSON.stringify(eventData));
+  }
+}
+
 app.set('view engine', 'ejs');
 // Serve static HTML files from the "client" directory
 app.use(express.static(path.join(__dirname, 'public')));
@@ -201,6 +226,19 @@ app.get('/charts', (req,res) => {
     });
   } else{
   res.json(null)}
+});
+
+app.get('/manual', (req, res) => {
+  const {token} = req.cookies
+  if(token){
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      const {firstname, lastname, email, _id} = await User.findById(userData.id);
+      res.render('manual.ejs', {firstname, lastname, email, _id});
+    })
+  } else{
+    res.redirect('/');
+  }
 });
 
 app.get('/getChartData', (req, res) => {

@@ -51,13 +51,25 @@
             <hr class="sidebar-divider">
 
             <!-- Heading -->
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Modes
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/manual">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Manual</span></a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <!-- Nav Item - Charts -->
             <div class="sidebar-heading">
                 Statistics
             </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-
-            <!-- Nav Item - Charts -->
             <li class="nav-item">
                 <a class="nav-link" href="/charts">
                     <i class="fas fa-fw fa-chart-area"></i>
@@ -143,9 +155,11 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="usernamespan"><%= firstname %> <%= lastname %></span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="usernamespan">
+                                    <%= firstname %>
+                                        <%= lastname %>
+                                </span>
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -153,11 +167,11 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
                             </div>
                         </li>
 
@@ -202,9 +216,10 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1" >
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 temperature</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="divtemperature">#</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="divtemperature">#
+                                            </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-thermometer-half fa-3x"></i>
@@ -218,7 +233,7 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1" >
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 air humidity</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" id="divhumidity">#</div>
                                         </div>
@@ -234,7 +249,7 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1" >
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 pH</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" id="divph">#</div>
                                         </div>
@@ -250,7 +265,7 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1" >
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Nitrogen</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" id="divnitrogen">#</div>
                                         </div>
@@ -266,9 +281,10 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1" >
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Phosphorus</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="divphosphorus">#</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="divphosphorus">#
+                                            </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-seedling fa-3x"></i>
@@ -282,7 +298,7 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1" >
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Kali(Potassium)</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" id="divkali">#</div>
                                         </div>
@@ -314,12 +330,14 @@
                         <!-- Card Header - Accordion -->
                         <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse"
                             role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                            <h6 class="m-0 font-weight-bold text-info" id="divrecommended">The recommended crop is #</h6>
+                            <h6 class="m-0 font-weight-bold text-info" id="divrecommended">The recommended crop is #
+                            </h6>
                         </a>
                         <!-- Card Content - Collapse -->
                         <div class="collapse show" id="collapseCardExample">
                             <div class="card-body">
-                                This is a prediction based on the amount of N, P, K in the soil along with humidity, rainfall, temperature and the soil's pH level.
+                                This is a prediction based on the amount of N, P, K in the soil along with humidity,
+                                rainfall, temperature and the soil's pH level.
                             </div>
                         </div>
                     </div>
@@ -333,44 +351,53 @@
                             <div class="card shadow mb-4">
                                 <a href="#collapseCard1" class="d-block card-header py-3" data-toggle="collapse"
                                     role="button" aria-expanded="true" aria-controls="collapseCard1">
-                                    <h6 class="m-0 font-weight-bold text-info" id="divrecommended">Fertilizer recommendation</h6>
+                                    <h6 class="m-0 font-weight-bold text-info" id="divrecommended">Fertilizer
+                                        recommendation</h6>
                                 </a>
                                 <div class="collapse show" id="collapseCard1">
                                     <div class="card-body">
                                         <form id="cropForm">
-                                        <div class="form-group">
-                                            <label for="cropInput" style="font-weight: bold; color: #333;">Crop</label>
-                                            <select class="form-control" id="cropInput" required>
-                                                <option value="" disabled selected>Select Crop</option>
-                                                <option value="Maize">Maize</option>
-                                                <option value="Sugarcane">Sugarcane</option>
-                                                <option value="Cotton">Cotton</option>
-                                                <option value="Tobacco">Tobacco</option>
-                                                <option value="Paddy">Paddy</option>
-                                                <option value="Barley">Barley</option>
-                                                <option value="Wheat">Wheat</option>
-                                                <option value="Millets">Millets</option>
-                                                <option value="Oilseeds">Oilseeds</option>
-                                                <option value="Pulses">Pulses</option>
-                                                <option value="Groundnuts">Groundnuts</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="soilInput" style="font-weight: bold; color: #333;">Soil</label>
-                                            <select class="form-control" id="soilInput" required>
-                                                <option value="" disabled selected>Select Soil Type</option>
-                                                <option value="Sandy">Sandy</option>
-                                                <option value="Loamy">Loamy</option>
-                                                <option value="Black">Black</option>
-                                                <option value="Red">Red</option>
-                                                <option value="Clayey">Clayey</option>
-                                            </select>
-                                        </div>
-                                        <button type="submit" class="btn btn-success">Submit</button>
+                                            <div class="form-group">
+                                                <label for="cropInput"
+                                                    style="font-weight: bold; color: #333;">Crop</label>
+                                                <select class="form-control" id="cropInput" required>
+                                                    <option value="" disabled selected>Select Crop</option>
+                                                    <option value="Maize">Maize</option>
+                                                    <option value="Sugarcane">Sugarcane</option>
+                                                    <option value="Cotton">Cotton</option>
+                                                    <option value="Tobacco">Tobacco</option>
+                                                    <option value="Paddy">Paddy</option>
+                                                    <option value="Barley">Barley</option>
+                                                    <option value="Wheat">Wheat</option>
+                                                    <option value="Millets">Millets</option>
+                                                    <option value="Oilseeds">Oilseeds</option>
+                                                    <option value="Pulses">Pulses</option>
+                                                    <option value="Groundnuts">Groundnuts</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="soilInput"
+                                                    style="font-weight: bold; color: #333;">Soil</label>
+                                                <select class="form-control" id="soilInput" required>
+                                                    <option value="" disabled selected>Select Soil Type</option>
+                                                    <option value="Sandy">Sandy</option>
+                                                    <option value="Loamy">Loamy</option>
+                                                    <option value="Black">Black</option>
+                                                    <option value="Red">Red</option>
+                                                    <option value="Clayey">Clayey</option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-success">Submit</button>
                                         </form>
                                         <div class="card-body" style="margin-bottom: 20px;">
                                             <h4 id="divfertilizer" style="display: none;"></h4>
-                                            <p class="mb-0"><small>Disclaimer: The following model predictions and recommendations are provided for informational purposes only and should not be taken as absolute or definitive advice. Consulting with local agricultural experts, conducting thorough research, and considering your specific circumstances before making any decisions related to crop selection or fertilizer usage is strongly recommended. </small></p>
+                                            <p class="mb-0"><small>Disclaimer: The following model predictions and
+                                                    recommendations are provided for informational purposes only and
+                                                    should not be taken as absolute or definitive advice. Consulting
+                                                    with local agricultural experts, conducting thorough research, and
+                                                    considering your specific circumstances before making any decisions
+                                                    related to crop selection or fertilizer usage is strongly
+                                                    recommended. </small></p>
                                         </div>
                                     </div>
                                 </div>
@@ -382,13 +409,15 @@
                             <div class="card shadow mb-4">
                                 <a href="#collapseCard2" class="d-block card-header py-3" data-toggle="collapse"
                                     role="button" aria-expanded="true" aria-controls="collapseCard2">
-                                    <h6 class="m-0 font-weight-bold text-info" id="divrecommended">N,P,K proportion in soil</h6>
+                                    <h6 class="m-0 font-weight-bold text-info" id="divrecommended">N,P,K proportion in
+                                        soil</h6>
                                 </a>
                                 <div class="collapse show" id="collapseCard2">
                                     <div class="card-body">
                                         <div class="chart-pie pt-4 pb-2">
                                             <canvas id="NPKpiechart"></canvas>
-                                            <p id="noDataMessage" class="text-center" style="display: none;">No N, P, K data available.</p>
+                                            <p id="noDataMessage" class="text-center" style="display: none;">No N, P, K
+                                                data available.</p>
                                         </div>
                                         <div class="mt-4 text-center small">
                                             <span class="mr-2">
@@ -414,19 +443,35 @@
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-info">Approach to automatic agriculture</h6>
                                 </div>
-                                <div class="card-body" style="background-color: #f8f8f8; border-radius: 25px; margin-bottom: 20px; animation: slideUp 1s ease;">
+                                <div class="card-body"
+                                    style="background-color: #f8f8f8; border-radius: 25px; margin-bottom: 20px; animation: slideUp 1s ease;">
                                     <div class="text-center">
-                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 23rem; box-shadow: 0px 3px 5px rgba(0,0,0,0.2); animation: fadeIn 1s ease;"
-                                            src="https://th.bing.com/th/id/OIP.PbMTRMj9x-Vvwl5vzmUXCgHaE8?pid=ImgDet&rs=1" alt="Smart Farming Image 1">
-                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 23rem; box-shadow: 0px 3px 5px rgba(0,0,0,0.2); animation: fadeIn 1s ease 0.2s;"
-                                            src="https://th.bing.com/th/id/R.27444c865fcc73301ae3854515bcf9c4?rik=m4mwyNQ9LKs4rA&pid=ImgRaw&r=0" alt="Smart Farming Image 2">
-                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 23rem; box-shadow: 0px 3px 5px rgba(0,0,0,0.2); animation: fadeIn 1s ease 0.4s;"
-                                            src="https://th.bing.com/th/id/OIP.KnG_EXzhNs6cu7GaRpSy7AHaE8?pid=ImgDet&rs=1" alt="Smart Farming Image 3">
+                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4"
+                                            style="width: 23rem; box-shadow: 0px 3px 5px rgba(0,0,0,0.2); animation: fadeIn 1s ease;"
+                                            src="https://th.bing.com/th/id/OIP.PbMTRMj9x-Vvwl5vzmUXCgHaE8?pid=ImgDet&rs=1"
+                                            alt="Smart Farming Image 1">
+                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4"
+                                            style="width: 23rem; box-shadow: 0px 3px 5px rgba(0,0,0,0.2); animation: fadeIn 1s ease 0.2s;"
+                                            src="https://th.bing.com/th/id/R.27444c865fcc73301ae3854515bcf9c4?rik=m4mwyNQ9LKs4rA&pid=ImgRaw&r=0"
+                                            alt="Smart Farming Image 2">
+                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4"
+                                            style="width: 23rem; box-shadow: 0px 3px 5px rgba(0,0,0,0.2); animation: fadeIn 1s ease 0.4s;"
+                                            src="https://th.bing.com/th/id/OIP.KnG_EXzhNs6cu7GaRpSy7AHaE8?pid=ImgDet&rs=1"
+                                            alt="Smart Farming Image 3">
                                     </div>
-                                    <p style="font-family: 'Arial', sans-serif; font-size: 18px; line-height: 1.6; animation: fadeIn 1s ease 0.6s;">
-                                        Automatic agriculture, also known as smart farming, utilizes advanced technologies like IoT and data analytics to optimize crop production and resource management. Through real-time monitoring of environmental factors and data-driven insights, farmers can make informed decisions about irrigation, fertilization, and pest control. This approach maximizes efficiency, minimizes resource wastage, and contributes to sustainable and high-yield agricultural practices.
+                                    <p
+                                        style="font-family: 'Arial', sans-serif; font-size: 18px; line-height: 1.6; animation: fadeIn 1s ease 0.6s;">
+                                        Automatic agriculture, also known as smart farming, utilizes advanced
+                                        technologies like IoT and data analytics to optimize crop production and
+                                        resource management. Through real-time monitoring of environmental factors and
+                                        data-driven insights, farmers can make informed decisions about irrigation,
+                                        fertilization, and pest control. This approach maximizes efficiency, minimizes
+                                        resource wastage, and contributes to sustainable and high-yield agricultural
+                                        practices.
                                     </p>
-                                    <a href="#" style="font-family: 'Arial', sans-serif; font-size: 16px; color: #007bff; animation: fadeIn 1s ease 0.8s;">Learn more</a>
+                                    <a href="#"
+                                        style="font-family: 'Arial', sans-serif; font-size: 16px; color: #007bff; animation: fadeIn 1s ease 0.8s;">Learn
+                                        more</a>
                                 </div>
                             </div>
                         </div>
@@ -500,13 +545,13 @@
         axios.defaults.withCredentials = true;
         document.getElementById('logoutBtn').addEventListener('click', handleLogout);
         function handleLogout() {
-        axios.post('/api/logout')
-            .then(() => {
-            window.location.href = '/';
-            })
-            .catch((error) => {
-            console.error('Logout failed:', error);
-            });
+            axios.post('/api/logout')
+                .then(() => {
+                    window.location.href = '/';
+                })
+                .catch((error) => {
+                    console.error('Logout failed:', error);
+                });
         }
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
@@ -548,47 +593,48 @@
             const Phosphorus = snapshot.val().Phosphorus
             const canvas = document.getElementById('NPKpiechart');
             const noDataMessage = document.getElementById('noDataMessage');
-            if (Potassium && Nitrogen && Phosphorus){
-            // Thêm giá trị mới vào mảng dữ liệu của biểu đồ
-            chartDataPie = [Nitrogen, Phosphorus, Potassium]
-            // Vẽ biểu đồ với dữ liệu mới nhất
-            if (myChartPie) {
-                myChartPie.destroy();
-            }
+            if (Potassium && Nitrogen && Phosphorus) {
+                // Thêm giá trị mới vào mảng dữ liệu của biểu đồ
+                chartDataPie = [Nitrogen, Phosphorus, Potassium]
+                // Vẽ biểu đồ với dữ liệu mới nhất
+                if (myChartPie) {
+                    myChartPie.destroy();
+                }
 
-            myChartPie = new Chart('NPKpiechart', {
-                type: 'doughnut',
-                data: {
-                    labels: ["N","P","K"],
-                    datasets: [{
-                        label: 'My Data',
-                        data: chartDataPie,
-                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-                        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-                        hoverBorderColor: "rgba(234, 236, 244, 1)",
-                    }],
-                },
-                options: {
-                    animation: {
-                        duration: 0 // Disable animation during chart creation
+                myChartPie = new Chart('NPKpiechart', {
+                    type: 'doughnut',
+                    data: {
+                        labels: ["N", "P", "K"],
+                        datasets: [{
+                            label: 'My Data',
+                            data: chartDataPie,
+                            backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                            hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                            hoverBorderColor: "rgba(234, 236, 244, 1)",
+                        }],
                     },
-                    maintainAspectRatio: false,
-                    tooltips: {
-                    backgroundColor: "rgb(255,255,255)",
-                    bodyFontColor: "#858796",
-                    borderColor: '#dddfeb',
-                    borderWidth: 1,
-                    xPadding: 15,
-                    yPadding: 15,
-                    displayColors: false,
-                    caretPadding: 10,
+                    options: {
+                        animation: {
+                            duration: 0 // Disable animation during chart creation
+                        },
+                        maintainAspectRatio: false,
+                        tooltips: {
+                            backgroundColor: "rgb(255,255,255)",
+                            bodyFontColor: "#858796",
+                            borderColor: '#dddfeb',
+                            borderWidth: 1,
+                            xPadding: 15,
+                            yPadding: 15,
+                            displayColors: false,
+                            caretPadding: 10,
+                        },
+                        legend: {
+                            display: false
+                        },
+                        cutoutPercentage: 80,
                     },
-                    legend: {
-                    display: false
-                    },
-                    cutoutPercentage: 80,
-                },
-            });} else {
+                });
+            } else {
                 noDataMessage.style.display = 'block';
                 canvas.style.display = 'none';
             }
@@ -613,37 +659,37 @@
                     const newDataHumi = snapshot.val().Humidity;
                     chartDataHumi.push(newDataHumi);
                     if (chartDataHumi.length > 20) {
-                    chartDataHumi.shift();
+                        chartDataHumi.shift();
                     }
 
                     const newDataTemp = snapshot.val().Temperature;
                     chartDataTemp.push(newDataTemp);
                     if (chartDataTemp.length > 20) {
-                    chartDataTemp.shift();
+                        chartDataTemp.shift();
                     }
 
                     const newDataPh = snapshot.val().pH;
                     chartDataPh.push(newDataPh);
                     if (chartDataPh.length > 20) {
-                    chartDataPh.shift();
+                        chartDataPh.shift();
                     }
 
                     const newDataNito = snapshot.val().N;
                     chartDataNito.push(newDataNito);
                     if (chartDataNito.length > 20) {
-                    chartDataNito.shift();
+                        chartDataNito.shift();
                     }
 
                     const newDataPhotpho = snapshot.val().Photpho;
                     chartDataPhotpho.push(newDataPhotpho);
                     if (chartDataPhotpho.length > 20) {
-                    chartDataPhotpho.shift();
+                        chartDataPhotpho.shift();
                     }
 
                     const newDataKali = snapshot.val().K;
                     chartDataKali.push(newDataKali);
                     if (chartDataKali.length > 20) {
-                    chartDataKali.shift();
+                        chartDataKali.shift();
                     }
                 } else {
                     console.log("No data available");
@@ -673,20 +719,20 @@
 
         onValue(child(dbRef, "Soil parameter"), (snapshot) => {
             const data = snapshot.val()
-            axios.post('/api/getweather', {temperature:data.Temperature, pH:data.Ph, N:data.Nitrogen,P:data.Phosphorus,K:data.Potassium})
-            .then(function(response){
-                const weatherdata = response.data;
-                Rainfall = weatherdata[0];
-                airHumidity = weatherdata[1];
-                console.log(weatherdata)
-                document.getElementById('divrainfall').textContent = `${weatherdata[0]} mm`
-                document.getElementById('divhumidity').textContent = `${weatherdata[1]} %`
-                document.getElementById('divrecommended').innerHTML = `The recommended crop is <strong>${weatherdata[2].toUpperCase()}</strong>`
-            }).catch(function(error){console.error('Data retrieval error:', error)})
+            axios.post('/api/getweather', { temperature: data.Temperature, pH: data.Ph, N: data.Nitrogen, P: data.Phosphorus, K: data.Potassium })
+                .then(function (response) {
+                    const weatherdata = response.data;
+                    Rainfall = weatherdata[0];
+                    airHumidity = weatherdata[1];
+                    console.log(weatherdata)
+                    document.getElementById('divrainfall').textContent = `${weatherdata[0]} mm`
+                    document.getElementById('divhumidity').textContent = `${weatherdata[1]} %`
+                    document.getElementById('divrecommended').innerHTML = `The recommended crop is <strong>${weatherdata[2].toUpperCase()}</strong>`
+                }).catch(function (error) { console.error('Data retrieval error:', error) })
         });
 
         onValue(child(dbRef, "Soil parameter"), (snapshot) => {
-            document.getElementById('cropForm').addEventListener('submit', function(event) {
+            document.getElementById('cropForm').addEventListener('submit', function (event) {
                 event.preventDefault();
                 const cropInput = document.getElementById('cropInput');
                 const selectedCrop = cropInput.value;
@@ -694,7 +740,7 @@
                 const selectedSoil = soilInput.value;
                 let fertilizer;
                 const data = snapshot.val()
-                axios.post('/api/tests/crops', {temperature:data.Temperature, pH:data.Ph, N:data.Nitrogen,P:data.Phosphorus,K:data.Potassium, soiltype:selectedSoil, croptype:selectedCrop, moisture:data.Humidity, rainfall: Rainfall,humidity: airHumidity, })
+                axios.post('/api/tests/crops', { temperature: data.Temperature, pH: data.Ph, N: data.Nitrogen, P: data.Phosphorus, K: data.Potassium, soiltype: selectedSoil, croptype: selectedCrop, moisture: data.Humidity, rainfall: Rainfall, humidity: airHumidity, })
                     .then((response) => {
                         fertilizer = response.data;
                         const recommendation = `Based on your inputs and analysis, for crop type "<strong>${selectedCrop}</strong>" and soil type "<strong>${selectedSoil}</strong>", we recommend using "<strong>${fertilizer}</strong>" fertilizer.`;
@@ -702,10 +748,10 @@
                         recommendationElement.innerHTML = recommendation;
                         recommendationElement.style.display = 'block';
                     })
-                    .catch((err) => {console.err(err)})
+                    .catch((err) => { console.err(err) })
             });
         });
-    </script> 
+    </script>
 </body>
 
 </html>
