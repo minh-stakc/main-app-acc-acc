@@ -1,6 +1,5 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
-// #include <FirebaseArduino.h>
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 #include <WebSocketsClient.h>
@@ -17,11 +16,9 @@ const char* password2 = "66668888";
 const char* ssid3 = "WiFi Poop";
 const char* password3 = "CircularShit";
 
-const char* serverIP = "192.168.208.50";
+const char* serverIP = "192.168.1.134";
 // const char* serverAddress = /*"ws://your-server-url"*/ "ws://localhost:" + serverPort + "/ws";
 const int serverPort = 4000;
-// #define FIREBASE_HOST "your-firebase-url.firebaseio.com"
-// #define FIREBASE_AUTH "your-firebase-auth-token"
 const int arraySize = 16;
 float array[arraySize];
 
@@ -43,7 +40,7 @@ void setupWiFi() {
 
 void setupWebSocket() {
   Serial.println("[SETUP] Initializing WebSocket...");
-  webSocket.begin("192.168.1.57", 4000, "/ws"); // Replace with your server IP and port
+  webSocket.begin(serverIP, 4000, "/ws"); // Replace with your server IP and port
   // webSocket.begin("ws://localhost:81/ws", serverPort);  // Replace with your server IP and port
   webSocket.onEvent(webSocketEvent);
 }
@@ -59,7 +56,6 @@ void setup() {
   Serial.println("[SETUP] BOOT");
   setupWiFi();
   setupWebSocket();
-  // Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
 }
 
 void loop() {
@@ -152,11 +148,7 @@ void webSocketEvent(WStype_t type, uint8_t* payload, size_t length) {
       Serial.println(data);
       if(event_type.indexOf("control") != -1){
         senderSerial.println(data);
-      }else{
-        receiverSerial.println(data);
       }
-      // senderSerial.write((char*)payload);
-
       // Check the event type and take appropriate action
       // Handle the event based on the message
       // Process the received message and change NeoPixel color if needed
