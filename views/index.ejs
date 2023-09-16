@@ -454,7 +454,7 @@
                 const contentContainer = document.getElementById('contentContainer');
                 while (contentContainer.firstChild) {contentContainer.removeChild(contentContainer.firstChild);}
                 response = response.data;
-                if (response.latestNitrogen && response.latestPhosphorus && response.latestPotassium) {
+                // if (response.latestNitrogen && response.latestPhosphorus && response.latestPotassium) {
                     const moistureDiv = createVariableDiv('Soil moisture', response.latestHumsoil, 'fas', 'fa-tint', '%');
                     const nitrogenDiv = createVariableDiv('Nitrogen', response.latestNitrogen, 'fas', 'fa-seedling', 'mg/kg');
                     const kaliDiv = createVariableDiv('Potassium', response.latestPotassium, 'fas', 'fa-leaf', 'mg/kg');
@@ -527,21 +527,21 @@
                         noDataMessage.style.display = 'block';
                         canvas.style.display = 'none';
                     };
-                } else {
-                    // Display "Connecting to server" message
-                    const connectingMessageContainer = document.createElement('div');
-                    connectingMessageContainer.style.display = 'flex';
-                    connectingMessageContainer.style.flexDirection = 'column';
-                    connectingMessageContainer.style.alignItems = 'center';
-                    connectingMessageContainer.style.justifyContent = 'center';
-                    connectingMessageContainer.style.height = '100%';
-                    const connectingMessage = document.createElement('div');
-                    connectingMessage.textContent = 'Connecting to server...';
-                    connectingMessage.style.fontSize = '24px';
-                    connectingMessage.style.color = '#FF5733'; 
-                    connectingMessageContainer.appendChild(connectingMessage);
-                    contentContainer.appendChild(connectingMessageContainer);
-                }
+                // } else {
+                //     // Display "Connecting to server" message
+                //     const connectingMessageContainer = document.createElement('div');
+                //     connectingMessageContainer.style.display = 'flex';
+                //     connectingMessageContainer.style.flexDirection = 'column';
+                //     connectingMessageContainer.style.alignItems = 'center';
+                //     connectingMessageContainer.style.justifyContent = 'center';
+                //     connectingMessageContainer.style.height = '100%';
+                //     const connectingMessage = document.createElement('div');
+                //     connectingMessage.textContent = 'Connecting to server...';
+                //     connectingMessage.style.fontSize = '24px';
+                //     connectingMessage.style.color = '#FF5733'; 
+                //     connectingMessageContainer.appendChild(connectingMessage);
+                //     contentContainer.appendChild(connectingMessageContainer);
+                // }
             })
             .catch((error)=>{console.error(error);})
         }
