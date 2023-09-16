@@ -43,7 +43,7 @@ void setupWiFi() {
 
 void setupWebSocket() {
   Serial.println("[SETUP] Initializing WebSocket...");
-  webSocket.begin("192.168.1.57", 4000, "/ws"); // Replace with your server IP and port
+  webSocket.begin("192.168.1.118", 4000, "/ws"); // Replace with your server IP and port
   // webSocket.begin("ws://localhost:81/ws", serverPort);  // Replace with your server IP and port
   webSocket.onEvent(webSocketEvent);
 }
