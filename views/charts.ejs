@@ -205,87 +205,8 @@
 
                     <!-- Content Row -->
                     <div class="row">
-
-                        <div class="col-xl-6 col-lg-6">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Temperature</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="canvatemp"></canvas>
-                                    </div>
-                                    <hr>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6 col-lg-6">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Soil moisture</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="canvamoisture"></canvas>
-                                    </div>
-                                    <hr>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6 col-lg-6">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">pH</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="canvaph"></canvas>
-                                    </div>
-                                    <hr>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6 col-lg-6">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Nitrogen</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="canvanitrogen"></canvas>
-                                    </div>
-                                    <hr>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6 col-lg-6">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Phosphorus</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="canvaphosphorus"></canvas>
-                                    </div>
-                                    <hr>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6 col-lg-6">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Potassium</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="chart-bar">
-                                        <canvas id="canvapotassium"></canvas>
-                                    </div>
-                                    <hr>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="row" id="contentContainer"></div>
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
 
@@ -366,6 +287,52 @@
         }
     </script>
 
+        <script>
+            const chartVariables = [
+                { chartId: 'myChartPH', label: 'pH' },
+                { chartId: 'myChartTDS', label: 'TDS' },
+                { chartId: 'myChartLux', label: 'Lux' },
+                { chartId: 'myChartHumidity', label: 'Humidity' },
+                { chartId: 'myChartTemperature', label: 'Temperature' },
+                { chartId: 'myChartHeatIndex', label: 'Heat Index' },
+                { chartId: 'myChartCorrected_PPM', label: 'Corrected PPM' },
+                { chartId: 'myChartDustDensity', label: 'Dust Density' },
+                { chartId: 'myChartRunningAverage', label: 'Running Average' },
+                { chartId: 'myChartNitrogen', label: 'Nitrogen' },
+                { chartId: 'myChartPhosphorus', label: 'Phosphorus' },
+                { chartId: 'myChartPotassium', label: 'Potassium' },
+                { chartId: 'myChartpHsoil', label: 'pH Soil' },
+                { chartId: 'myChartEC', label: 'EC' },
+                { chartId: 'myChartTempsoil', label: 'Soil Temperature' },
+                { chartId: 'myChartHumsoil', label: 'Soil Humidity' },
+            ];
+
+            function createChartDiv(variable) {
+                const chartDiv = document.createElement('div');
+                chartDiv.classList.add('col-xl-6', 'col-lg-6');
+                chartDiv.innerHTML = `
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">${variable.label}</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-area">
+                                <canvas id="canva${variable.chartId}"></canvas>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                `;
+                return chartDiv;
+            }
+
+            const contentContainer = document.getElementById('contentContainer');
+            chartVariables.forEach(variable => {
+                const chartDiv = createChartDiv(variable);
+                contentContainer.appendChild(chartDiv);
+            });
+        </script>
+
       <script type="module">
         let myChartPH;
         let myChartTDS;
@@ -400,12 +367,12 @@
         let chartDataEC = [];
         let chartDataTempsoil = [];
         let chartDataHumsoil = [];
-        function createChart(chartData, chartId, label, num) {
+        function createChart(chartData, chartId,id, label, num) {
             if (chartId) {
                 chartId.destroy();
             }
-
-            chartId = new Chart('canvas', {
+            console.log(`canva${id}`)
+            chartId = new Chart(`canva${id}`, {
                 type: 'line',
                 data: {
                     labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
@@ -495,6 +462,7 @@
         function fetchDataAndUpdateCharts() {
             axios.get('/api/getChartData')
                 .then((response) => {
+                    response = response.data;
                     console.log(response);
                     chartDataPH = response.PH;
                     chartDataTDS = response.TDS;
@@ -512,26 +480,26 @@
                     chartDataEC = response.EC;
                     chartDataTempsoil = response.Tempsoil;
                     chartDataHumsoil = response.Humsoil;
-                    createChart(chartDataPH, myChartPH, 'pH', 'pH');
-                    createChart(chartDataTDS, myChartTDS, 'TDS', 'TDS');
-                    createChart(chartDataLux, myChartLux, 'Lux', 'Lux');
-                    createChart(chartDataHumidity, myChartHumidity, 'Humidity', '%');
-                    createChart(chartDataTemperature, myChartTemperature, 'Temperature', '°C');
-                    createChart(chartDataHeatIndex, myChartHeatIndex, 'Heat Index', '°C');
-                    createChart(chartDataCorrected_PPM, myChartCorrected_PPM, 'Corrected PPM', 'PPM');
-                    createChart(chartDataDustDensity, myChartDustDensity, 'Dust Density', 'Density');
-                    createChart(chartDataRunningAverage, myChartRunningAverage, 'Running Average', 'Average');
-                    createChart(chartDataNitrogen, myChartNitrogen, 'Nitrogen', 'N');
-                    createChart(chartDataPhosphorus, myChartPhosphorus, 'Phosphorus', 'P');
-                    createChart(chartDataPotassium, myChartPotassium, 'Potassium', 'K');
-                    createChart(chartDatapHsoil, myChartpHsoil, 'pH Soil', 'pH');
-                    createChart(chartDataEC, myChartEC, 'EC', 'EC');
-                    createChart(chartDataTempsoil, myChartTempsoil, 'Soil Temperature', '°C');
-                    createChart(chartDataHumsoil, myChartHumsoil, 'Soil Humidity', '%');
                 })
                 .catch((error) => {
                     console.error(error);
                 });
+                createChart(chartDataPH, myChartPH, 'myChartPH', 'pH', 'pH');
+                createChart(chartDataTDS, myChartTDS, 'myChartTDS', 'TDS', 'TDS');
+                createChart(chartDataLux, myChartLux, 'myChartLux', 'Lux', 'Lux');
+                createChart(chartDataHumidity, myChartHumidity, 'myChartHumidity', 'Humidity', '%');
+                createChart(chartDataTemperature, myChartTemperature, 'myChartTemperature', 'Temperature', '°C');
+                createChart(chartDataHeatIndex, myChartHeatIndex, 'myChartHeatIndex', 'Heat Index', '°C');
+                createChart(chartDataCorrected_PPM, myChartCorrected_PPM, 'myChartCorrected_PPM', 'Corrected PPM', 'PPM');
+                createChart(chartDataDustDensity, myChartDustDensity, 'myChartDustDensity', 'Dust Density', 'Density');
+                createChart(chartDataRunningAverage, myChartRunningAverage, 'myChartRunningAverage', 'Running Average', 'Average');
+                createChart(chartDataNitrogen, myChartNitrogen, 'myChartNitrogen', 'Nitrogen', 'N');
+                createChart(chartDataPhosphorus, myChartPhosphorus, 'myChartPhosphorus', 'Phosphorus', 'P');
+                createChart(chartDataPotassium, myChartPotassium, 'myChartPotassium', 'Potassium', 'K');
+                createChart(chartDatapHsoil, myChartpHsoil, 'myChartpHsoil', 'pH Soil', 'pH');
+                createChart(chartDataEC, myChartEC, 'myChartEC', 'EC', 'EC');
+                createChart(chartDataTempsoil, myChartTempsoil, 'myChartTempsoil', 'Soil Temperature', '°C');
+                createChart(chartDataHumsoil, myChartHumsoil, 'myChartHumsoil', 'Soil Humidity', '%');
         }
         fetchDataAndUpdateCharts();
         setInterval(fetchDataAndUpdateCharts, 7000); 

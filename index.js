@@ -331,7 +331,7 @@ app.get('/api/getChartData', (req, res) => {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
       const data = {
-        PH,
+        PH:100,
         TDS,
         Lux,
         Humidity,
