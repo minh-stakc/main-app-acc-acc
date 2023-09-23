@@ -369,7 +369,7 @@
             function extendCylinder() {
                 const data = {
                     type: "control/cylinder",
-                    direction: 2,
+                    direction: 1,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Cylinder is Extended');
@@ -378,7 +378,7 @@
             function retractCylinder() {
                 const data = {
                     type: "control/cylinder",
-                    direction: 0,
+                    direction: -1,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Cylinder is Retracted');
@@ -387,7 +387,7 @@
             function stopCylinder() {
                 const data = {
                     type: "control/cylinder",
-                    direction: 1,
+                    direction: 0,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Cylinder is Stopped');
@@ -396,7 +396,7 @@
             function driveForward() {
                 const data = {
                     type: "control/both_motors",
-                    direction: 2,
+                    direction: 1,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is moving forward');
@@ -405,7 +405,7 @@
             function driveBackward() {
                 const data = {
                     type: "control/both_motors",
-                    direction: 0,
+                    direction: -1,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is moving backward');
@@ -414,7 +414,7 @@
             function stopDrive() {
                 const data = {
                     type: "control/both_motors",
-                    direction: 1,
+                    direction: 0,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is stopped');
