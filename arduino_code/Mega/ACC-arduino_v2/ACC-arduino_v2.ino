@@ -269,6 +269,16 @@ void readAndSendDataToESP()
   if (millis() - sendTimepoint > 5000U)
   {
     sendTimepoint = millis();
+    // Serial1.print("Sensors_data: ");
+    // Serial1.println("water_ph=" + String(phValue) + " ");
+    // Serial1.println("water_tds=" + String(tdsValue) + " ");
+    // Serial1.println("lux=" + String(lux) + " ");
+    // Serial1.println("humidity=" + String(h) + " ");
+    // Serial1.println("temperature=" + String(t) + " ");
+    // Serial1.println("heat_index=" + String(hic) + " ");
+    // Serial1.println("corrected_ppm=" + String(correctedPPM) + " ");
+    // Serial1.println("dust_density=" + String(dustSensor.getDustDensity()) + " ");
+    // Serial1.println("running_average=" + String(dustSensor.getRunningAverage()) + " ");
     sendValues(phValue, tdsValue, lux, h, t, hic, correctedPPM, dustSensor.getDustDensity(), dustSensor.getRunningAverage());
   }
 }
