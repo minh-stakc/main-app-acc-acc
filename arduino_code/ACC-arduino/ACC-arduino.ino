@@ -9,7 +9,7 @@
 #include <ModbusMaster.h>
 #include <Servo.h>
 #define PIN_MQ135 A3
-#define DHTPIN 8
+#define DHTPIN 10
 #define photodiodePin A2
 #define DHTTYPE DHT22
 #define TdsSensorPin A1
@@ -99,8 +99,8 @@ void setup() {
   servo2.attach(Servo2Pin);
   pinMode(PIN_RELAY_LED_1, OUTPUT);
   pinMode(PIN_RELAY_LED_2, OUTPUT);
-  pinMode(PIN_RELAY_3, OUTPUT);
-  pinMode(PIN_RELAY_4, OUTPUT);
+  // pinMode(PIN_RELAY_3, OUTPUT);
+  // pinMode(PIN_RELAY_4, OUTPUT);
   digitalWrite(PIN_RELAY_LED_1, HIGH);
   digitalWrite(PIN_RELAY_LED_2, HIGH);
 }

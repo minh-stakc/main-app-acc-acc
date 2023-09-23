@@ -12,12 +12,12 @@ SoftwareSerial senderSerial(D5, D6);
 
 const char* ssid = "American Study";
 const char* password = "66668888";
-const char* ssid2 = "AmericanStudy";
+const char* ssid2 = "AmericanStudy T1";
 const char* password2 = "66668888";
 const char* ssid3 = "WiFi Poop";
 const char* password3 = "CircularShit";
 
-const char* serverIP = "192.168.208.50";
+const char* serverIP = "192.168.100.83";
 // const char* serverAddress = /*"ws://your-server-url"*/ "ws://localhost:" + serverPort + "/ws";
 const int serverPort = 4000;
 // #define FIREBASE_HOST "your-firebase-url.firebaseio.com"
