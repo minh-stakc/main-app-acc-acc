@@ -17,7 +17,7 @@ const char *ssid3 = "WiFi Poop";
 const char *password3 = "CircularShit";
 
 // const char *serverIP = "192.168.1.134";
-const char *serverAddress = "192.168.1.134";  //"automaticcropcaretaker.com";
+const char *serverAddress = "192.168.100.83";  //"automaticcropcaretaker.com";
 const int serverPort = 4000;
 const char *serverURL = "/ws";  //"/";
 const char *serverProtocol = "arduino";
@@ -41,7 +41,8 @@ void setupWiFi() {
 
 void setupWebSocket() {
   Serial.println("[SETUP] Initializing WebSocket...");
-  webSocket.begin(serverAddress, serverPort, serverURL, serverProtocol);
+  // webSocket.begin(serverAddress, serverPort, serverURL, serverProtocol);
+  webSocket.begin(serverAddress, 4000, "/ws");
   webSocket.onEvent(webSocketEvent);
 }
 

@@ -387,36 +387,8 @@
                             bottom: 0
                         }
                     },
-                    scales: {
-                        xAxes: [{
-                            time: {
-                                unit: 'date'
-                            },
-                            gridLines: {
-                                display: false,
-                                drawBorder: false
-                            },
-                            ticks: {
-                                maxTicksLimit: 7
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                maxTicksLimit: 5,
-                                padding: 10,
-                                callback: function (value, index, values) {
-                                    return number_format(value) + ' ' + num;
-                                }
-                            },
-                            gridLines: {
-                                color: "rgb(234, 236, 244)",
-                                zeroLineColor: "rgb(234, 236, 244)",
-                                drawBorder: false,
-                                borderDash: [2],
-                                zeroLineBorderDash: [2]
-                            }
-                        }],
-                    },
+                    
+                    
                     legend: {
                         display: false
                     },
@@ -443,6 +415,7 @@
                     }
                 }
             });
+            return chartId;
         }
         function fetchDataAndUpdateCharts() {
             axios.get('/api/getChartData')
@@ -469,22 +442,22 @@
                 .catch((error) => {
                     console.error(error);
                 });
-                createChart(chartDataPH, myChartPH, 'myChartPH', 'pH', 'pH');
-                createChart(chartDataTDS, myChartTDS, 'myChartTDS', 'TDS', 'TDS');
-                createChart(chartDataLux, myChartLux, 'myChartLux', 'Lux', 'Lux');
-                createChart(chartDataHumidity, myChartHumidity, 'myChartHumidity', 'Humidity', '%');
-                createChart(chartDataTemperature, myChartTemperature, 'myChartTemperature', 'Temperature', '°C');
-                createChart(chartDataHeatIndex, myChartHeatIndex, 'myChartHeatIndex', 'Heat Index', '°C');
-                createChart(chartDataCorrected_PPM, myChartCorrected_PPM, 'myChartCorrected_PPM', 'Corrected PPM', 'PPM');
-                createChart(chartDataDustDensity, myChartDustDensity, 'myChartDustDensity', 'Dust Density', 'Density');
-                createChart(chartDataRunningAverage, myChartRunningAverage, 'myChartRunningAverage', 'Running Average', 'Average');
-                createChart(chartDataNitrogen, myChartNitrogen, 'myChartNitrogen', 'Nitrogen', 'N');
-                createChart(chartDataPhosphorus, myChartPhosphorus, 'myChartPhosphorus', 'Phosphorus', 'P');
-                createChart(chartDataPotassium, myChartPotassium, 'myChartPotassium', 'Potassium', 'K');
-                createChart(chartDatapHsoil, myChartpHsoil, 'myChartpHsoil', 'pH Soil', 'pH');
-                createChart(chartDataEC, myChartEC, 'myChartEC', 'EC', 'EC');
-                createChart(chartDataTempsoil, myChartTempsoil, 'myChartTempsoil', 'Soil Temperature', '°C');
-                createChart(chartDataHumsoil, myChartHumsoil, 'myChartHumsoil', 'Soil Humidity', '%');
+                myChartPH = createChart(chartDataPH, myChartPH, 'myChartPH', 'pH', 'pH');
+                myChartTDS = createChart(chartDataTDS, myChartTDS, 'myChartTDS', 'TDS', 'TDS');
+                myChartLux = createChart(chartDataLux, myChartLux, 'myChartLux', 'Lux', 'Lux');
+                myChartHumidity = createChart(chartDataHumidity, myChartHumidity, 'myChartHumidity', 'Humidity', '%');
+                myChartTemperature = createChart(chartDataTemperature, myChartTemperature, 'myChartTemperature', 'Temperature', '°C');
+                myChartHeatIndex = createChart(chartDataHeatIndex, myChartHeatIndex, 'myChartHeatIndex', 'Heat Index', '°C');
+                myChartCorrected_PPM = createChart(chartDataCorrected_PPM, myChartCorrected_PPM, 'myChartCorrected_PPM', 'Corrected PPM', 'PPM');
+                myChartDustDensity = createChart(chartDataDustDensity, myChartDustDensity, 'myChartDustDensity', 'Dust Density', 'Density');
+                myChartRunningAverage = createChart(chartDataRunningAverage, myChartRunningAverage, 'myChartRunningAverage', 'Running Average', 'Average');
+                myChartNitrogen = createChart(chartDataNitrogen, myChartNitrogen, 'myChartNitrogen', 'Nitrogen', 'N');
+                myChartPhosphorus = createChart(chartDataPhosphorus, myChartPhosphorus, 'myChartPhosphorus', 'Phosphorus', 'P');
+                myChartPotassium = createChart(chartDataPotassium, myChartPotassium, 'myChartPotassium', 'Potassium', 'K');
+                myChartpHsoil = createChart(chartDatapHsoil, myChartpHsoil, 'myChartpHsoil', 'pH Soil', 'pH');
+                myChartEC = createChart(chartDataEC, myChartEC, 'myChartEC', 'EC', 'EC');
+                myChartTempsoil = createChart(chartDataTempsoil, myChartTempsoil, 'myChartTempsoil', 'Soil Temperature', '°C');
+                myChartHumsoil = createChart(chartDataHumsoil, myChartHumsoil, 'myChartHumsoil', 'Soil Humidity', '%');
         }
         fetchDataAndUpdateCharts();
         setInterval(fetchDataAndUpdateCharts, 7000); 

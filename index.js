@@ -74,7 +74,7 @@ app.ws("/ws", (ws, req) => {
   ws.on("message", (msg) => {
     console.log("Message from client:", msg);
     const data = JSON.parse(msg);
-    if(data.type == "sensors_data"){
+    if(data["type"] == "sensors_data"){
       latestPH = data["PH"];
       latestTDS = data["TDS"];
       latestLux = data["Lux"];
@@ -134,7 +134,7 @@ function sendEventToClients(eventData) {
 }
 
 
-
+console.log()
 
 //register
 app.get('/', (req, res) => {

@@ -273,15 +273,16 @@ void readAndSendDataToESP() {
     StaticJsonDocument<200> jsonDoc;
 
     // Populate the JSON object with sensor data
-    jsonDoc["water_ph"] = phValue;
-    jsonDoc["water_tds"] = tdsValue;
-    jsonDoc["lux"] = lux;
-    jsonDoc["humidity"] = h;
-    jsonDoc["temperature"] = t;
-    jsonDoc["heat_index"] = hic;
-    jsonDoc["corrected_ppm"] = correctedPPM;
-    jsonDoc["dust_density"] = dustSensor.getDustDensity();
-    jsonDoc["running_average"] = dustSensor.getRunningAverage();
+    jsonDoc["type"] = "sensors_data";
+    jsonDoc["PH"] = phValue;
+    jsonDoc["TDS"] = tdsValue;
+    jsonDoc["Lux"] = lux;
+    jsonDoc["Humidity"] = h;
+    jsonDoc["Temperature"] = t;
+    jsonDoc["Heat Index"] = hic;
+    jsonDoc["Corrected_PPM"] = correctedPPM;
+    jsonDoc["Dust Density"] = dustSensor.getDustDensity();
+    jsonDoc["Running Average"] = dustSensor.getRunningAverage();
 
     // Serialize the JSON to a string
     String jsonString;
@@ -506,6 +507,23 @@ void bothMotors(int direction) {
     digitalWrite(MRightL_PWM, LOW);
     analogWrite(MLeftRL_EN, 80);
     analogWrite(MRightRL_EN, 80);
+  }
+}
+
+void cylinder(int direction) {
+  int speed = 0;
+  cylinder_state = direction;
+  Serial.println("cylinder");
+  if (direction == 1) {
+    digitalWrite(CylR_PWM, HIGH);  // extend
+    digitalWrite(CylL_PWM, LOW);
+    analogWrite(CylRL_EN, 255);
+  } else if (direction == 0) {
+    analogWrite(CylRL_EN, 0);
+  } else {
+    digitalWrite(CylR_PWM, LOW);  // retract
+    digitalWrite(CylL_PWM, HIGH);
+    analogWrite(CylRL_EN, 255);
   }
 }
 
