@@ -483,6 +483,8 @@
                 const data = {
                     type: "control/both_motors",
                     direction: 1,
+                    speed1: 26,
+                    speed2: 20,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is moving forward');
@@ -492,6 +494,8 @@
                 const data = {
                     type: "control/both_motors",
                     direction: -1,
+                    speed1: 26,
+                    speed2: 20,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is moving backward');
