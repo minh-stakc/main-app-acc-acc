@@ -189,12 +189,20 @@
                     <h1>Device Control</h1>
 
 
-                    <h1>Drive Base Control</h1>
+                    <h2>Drive Base Control</h2>
 
                     <!-- Drive Base Control -->
                     <button id="forwardButton">Forward</button>
                     <button id="backwardButton">Backward</button>
                     <button id="stopButton">Stop</button>
+                    <br>
+                    <button id="leftMotorForwardButton">Left Motor Forward</button>
+                    <button id="leftMotorBackwardButton">Left Motor Backward</button>
+                    <button id="leftMotorStopButton">Left Motor Stop</button>
+                    <br>
+                    <button id="rightMotorForwardButton">Right Motor Forward</button>
+                    <button id="rightMotorBackwardButton">Right Motor Backward</button>
+                    <button id="rightMotorStopButton">Right Motor Stop</button>
 
                     <h2>Motor Status:</h2>
                     <span id="motorStatus">Stopped</span>
@@ -206,23 +214,42 @@
                     <button id="cylinderDownButton">Down</button>
                     <button id="cylinderStopButton">Stop</button>
 
-                    <h2>Motor Status:</h2>
-                    <span id="motorStatus">Stopped</span>
-
-
+                    <h2>Cylinder Status:</h2>
+                    <span id="cylinderStatus">Stopped</span>
 
                     <!-- LED Control -->
                     <h2>LED Control</h2>
                     <label>LED Status:</label>
                     <span id="ledStatus">OFF</span>
-                    <button id="toggleLedButton">Toggle LED</button>
+                    <button id="toggleLedButton">Toggle LED</button>    
+                    <br>
+                    <button id="turnOnLED1Button">Turn On LED1</button>
+                    <button id="turnOffLED1Button">Turn Off LED1</button>
+                    <br>
+                    <button id="turnOnLED2Button">Turn On LED2</button>
+                    <button id="turnOffLED2Button">Turn Off LED2</button>
 
                     <!-- Pump Control -->
                     <h2>Pump Control</h2>
                     <label>Pump Status:</label>
                     <span id="pumpStatus">OFF</span>
                     <button id="togglePumpButton">Toggle Pump</button>
-
+                    
+                    <!-- Servos Control -->
+                    <h2>Servos Control</h2>
+                    <button id="bothServosUpButton">Both Servos Up</button>
+                    <button id="bothServosDownButton">Both Servos Down</button>
+                    <br>
+                    <button id="leftServoUpButton">Left Servo Up</button>
+                    <button id="leftServoDownButton">Left Servo Down</button>
+                    <br>
+                    <button id="rightServoUpButton">Right Servo Up</button>
+                    <button id="rightServoDownButton">Right Servo Down</button>
+                    
+                    <!-- Read Soil Control -->
+                    <h2>Read Soil Control</h2>
+                    <button id="readSoilButton">Read Soil</button>
+                    <button id="useCylinderToReadSoilButton">Use Cylinder to Read Soil</button>
 
 
                 </div>
@@ -280,10 +307,10 @@
             toggleLedButton.addEventListener('click', () => {
                 if (ledOn) {
                     // Turn off the LED
-                    turnOffLED();
+                    turnOffBothLEDs();
                 } else {
                     // Turn on the LED
-                    turnOnLED();
+                    turnOnBothLEDs();
                 }
 
                 // Toggle the LED status
@@ -349,27 +376,85 @@
                 // Drive base forward
                 retractCylinder();
                 // Update motor status
-                motorStatus.textContent = 'retracting cylinder';
+                cylinderStatus.textContent = 'retracting cylinder';
             });
-            
+
             cylinderDownButton.addEventListener('click', () => {
                 // Drive base forward
                 extendCylinder();
                 // Update motor status
-                motorStatus.textContent = 'extending cylinder';
+                cylinderStatus.textContent = 'extending cylinder';
             });
 
             cylinderStopButton.addEventListener('click', () => {
                 // Drive base forward
                 stopCylinder();
                 // Update motor status
-                motorStatus.textContent = 'stopping cylinder';
+                cylinderStatus.textContent = 'stopping cylinder';
             });
 
+            //both_servos func
+            function bothServosUp() {
+                const data = {
+                    type: "control/both_servos",
+                    direction: 1,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is moving forward');
+            }
+
+            function bothServosDown() {
+                const data = {
+                    type: "control/both_servos",
+                    direction: 0,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is moving backward');
+            }
+
+            //left_servo func
+            function leftServoUp() {
+                const data = {
+                    type: "control/left_servo",
+                    direction: 1,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is moving forward');
+            }
+
+            function leftServoDown() {
+                const data = {
+                    type: "control/left_servo",
+                    direction: 0,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is moving backward');
+            }
+
+            //right_servo func
+            function rightServoUp() {
+                const data = {
+                    type: "control/right_servo",
+                    direction: 1,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is moving forward');
+            }
+
+            function rightServoDown() {
+                const data = {
+                    type: "control/right_servo",
+                    direction: 0,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is moving backward');
+            }
+
+            //cylinder func
             function extendCylinder() {
                 const data = {
                     type: "control/cylinder",
-                    direction: 2,
+                    direction: 1,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Cylinder is Extended');
@@ -378,7 +463,7 @@
             function retractCylinder() {
                 const data = {
                     type: "control/cylinder",
-                    direction: 0,
+                    direction: -1,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Cylinder is Retracted');
@@ -387,16 +472,17 @@
             function stopCylinder() {
                 const data = {
                     type: "control/cylinder",
-                    direction: 1,
+                    direction: 0,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Cylinder is Stopped');
             }
 
+            //both_motors func
             function driveForward() {
                 const data = {
                     type: "control/both_motors",
-                    direction: 2,
+                    direction: 1,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is moving forward');
@@ -405,7 +491,7 @@
             function driveBackward() {
                 const data = {
                     type: "control/both_motors",
-                    direction: 0,
+                    direction: -1,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is moving backward');
@@ -414,12 +500,69 @@
             function stopDrive() {
                 const data = {
                     type: "control/both_motors",
-                    direction: 1,
+                    direction: 0,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is stopped');
             }
 
+            //left_motor func
+            function leftMotorForward() {
+                const data = {
+                    type: "control/left_motor",
+                    direction: 1,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is moving forward');
+            }
+
+            function leftMotorBackward() {
+                const data = {
+                    type: "control/left_motor",
+                    direction: -1,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is moving backward');
+            }
+
+            function leftMotorStop() {
+                const data = {
+                    type: "control/left_motor",
+                    direction: 0,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is stopped');
+            }
+
+            //right_motor func
+            function rightMotorForward() {
+                const data = {
+                    type: "control/right_motor",
+                    direction: 1,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is moving forward');
+            }
+
+            function rightMotorBackward() {
+                const data = {
+                    type: "control/right_motor",
+                    direction: -1,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is moving backward');
+            }
+
+            function rightMotorStop() {
+                const data = {
+                    type: "control/right_motor",
+                    direction: 0,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('Drive base is stopped');
+            }
+
+            //pump func
             function turnOnPump() {
                 const data = {
                     type: "control/pump",
@@ -438,23 +581,100 @@
                 console.log('Pump is OFF');
             }
 
-            function turnOnLED() {
+            //led1, led2 func
+            function turnOnLED1() {
                 const data = {
-                    type: "control/led",
+                    type: "control/led1",
                     direction: 1,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('LED is ON');
             }
 
-            function turnOffLED() {
+            function turnOffLED1() {
                 const data = {
-                    type: "control/led",
+                    type: "control/led1",
                     direction: 0,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('LED is OFF');
             }
+
+            function turnOnLED2() {
+                const data = {
+                    type: "control/led2",
+                    direction: 1,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('LED is ON');
+            }
+
+            function turnOffLED2() {
+                const data = {
+                    type: "control/led2",
+                    direction: 0,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('LED is OFF');
+            }
+
+            //both_leds
+            function turnOnBothLEDs() {
+                const data = {
+                    type: "control/both_leds",
+                    direction: 1,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('LED is ON');
+            }
+
+            function turnOffBothLEDs() {
+                const data = {
+                    type: "control/both_leds",
+                    direction: 0,
+                };
+                socket.send(JSON.stringify(data));
+                console.log('LED is OFF');
+            }
+
+            //read_soil func
+            function readSoil() {
+                const data = {
+                    type: "control/read_soil",
+                }
+                socket.send(JSON.stringify(data));
+                console.log('Reading soil data for 30 secs');
+            }
+
+            function useCylinderToReadSoil() {
+                const data = {
+                    type: "control/cylinder_to_read_soil",
+                }
+                socket.send(JSON.stringify(data));
+                console.log('Reading soil data for 5 mins');
+            }
+
+            document.getElementById('bothServosUpButton').addEventListener('click', bothServosUp);
+            document.getElementById('bothServosDownButton').addEventListener('click', bothServosDown);
+            document.getElementById('leftServoUpButton').addEventListener('click', leftServoUp);
+            document.getElementById('leftServoDownButton').addEventListener('click', leftServoDown);
+            document.getElementById('rightServoUpButton').addEventListener('click', rightServoUp);
+            document.getElementById('rightServoDownButton').addEventListener('click', rightServoDown);
+
+            document.getElementById('leftMotorForwardButton').addEventListener('click', leftMotorForward);
+            document.getElementById('leftMotorBackwardButton').addEventListener('click', leftMotorBackward);
+            document.getElementById('leftMotorStopButton').addEventListener('click', leftMotorStop);
+            document.getElementById('rightMotorForwardButton').addEventListener('click', rightMotorForward);
+            document.getElementById('rightMotorBackwardButton').addEventListener('click', rightMotorBackward);
+            document.getElementById('rightMotorStopButton').addEventListener('click', rightMotorStop);
+
+            document.getElementById('turnOnLED1Button').addEventListener('click', turnOnLED1);
+            document.getElementById('turnOffLED1Button').addEventListener('click', turnOffLED1);
+            document.getElementById('turnOnLED2Button').addEventListener('click', turnOnLED2);
+            document.getElementById('turnOffLED2Button').addEventListener('click', turnOffLED2);
+
+            document.getElementById('readSoilButton').addEventListener('click', readSoil);
+            document.getElementById('useCylinderToReadSoilButton').addEventListener('click', useCylinderToReadSoil);
         });
     </script>
 </body>
