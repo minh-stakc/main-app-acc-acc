@@ -60,7 +60,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
     credentials: true,
-    origin: ['http://localhost:4000'],
+    // origin: ['http://localhost:4000'],
+    origin: ['http://automaticcropcaretaker.com'],
 }));
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
