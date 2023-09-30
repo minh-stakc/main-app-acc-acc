@@ -182,126 +182,77 @@
                 <!-- End of Topbar -->
 
 
-                <div class="container mt-5">
 
-                    <h1 class="mb-4">Device Control</h1>
-
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body shadow">
-                                    <h2 class="mb-3">Drive Base Control</h2>
-                                    <p class="mt-3">Motor Status:<span id="motorStatus"
-                                            class="badge badge-secondary">Stopped</span></p>
-
-                                    <div class="d-flex mb-3">
-                                        <button id="forwardButton" class="btn btn-primary mr-2"><i
-                                                class="fas fa-arrow-right"></i>
-                                            Forward</button>
-                                        <button id="backwardButton" class="btn btn-primary mr-2"><i
-                                                class="fas fa-arrow-left"></i> Backward</button>
-                                        <button id="stopButton" class="btn btn-danger"><i class="fas fa-stop"></i>
-                                            Stop</button>
-                                    </div>
+                <div class="container-fluid">
 
 
-                                    <div class="d-flex mb-3">
-                                        <button id="leftMotorForwardButton" class="btn btn-primary mr-2"><i
-                                                class="fas fa-arrow-right"></i> Left Forward</button>
-                                        <button id="leftMotorBackwardButton" class="btn btn-primary mr-2"><i
-                                                class="fas fa-arrow-left"></i> Left Backward</button>
-                                        <button id="leftMotorStopButton" class="btn btn-danger"><i
-                                                class="fas fa-stop"></i> Left Stop</button>
-                                    </div>
+                    <h1>Device Control</h1>
 
-                                    <div class="d-flex mb-3">
-                                        <button id="rightMotorForwardButton" class="btn btn-primary mr-2"><i
-                                                class="fas fa-arrow-right"></i> Right Forward</button>
-                                        <button id="rightMotorBackwardButton" class="btn btn-primary mr-2"><i
-                                                class="fas fa-arrow-left"></i> Right Backward</button>
-                                        <button id="rightMotorStopButton" class="btn btn-danger"><i
-                                                class="fas fa-stop"></i>
-                                            Right Stop</button>
-                                    </div>
 
-                                    <h2 class="mb-3">Servos Control</h2>
-                                    <div class="d-flex mb-3">
-                                        <button id="bothServosUpButton" class="btn btn-primary mr-2"><i
-                                                class="fas fa-arrow-up"></i> Both Servos Up</button>
-                                        <button id="bothServosDownButton" class="btn btn-primary mr-2"><i
-                                                class="fas fa-arrow-down"></i> Both Servos Down</button>
-                                    </div>
+                    <h2>Drive Base Control</h2>
 
-                                    <div class="d-flex mb-3">
-                                        <button id="leftServoUpButton" class="btn btn-primary mr-2"><i
-                                                class="fas fa-arrow-up"></i> Left Up</button>
-                                        <button id="leftServoDownButton" class="btn btn-primary mr-2"><i
-                                                class="fas fa-arrow-down"></i> Left Down</button>
-                                    </div>
+                    <!-- Drive Base Control -->
+                    <button id="forwardButton">Forward</button>
+                    <button id="backwardButton">Backward</button>
+                    <button id="stopButton">Stop</button>
+                    <br>
+                    <button id="leftMotorForwardButton">Left Motor Forward</button>
+                    <button id="leftMotorBackwardButton">Left Motor Backward</button>
+                    <button id="leftMotorStopButton">Left Motor Stop</button>
+                    <br>
+                    <button id="rightMotorForwardButton">Right Motor Forward</button>
+                    <button id="rightMotorBackwardButton">Right Motor Backward</button>
+                    <button id="rightMotorStopButton">Right Motor Stop</button>
 
-                                    <div class="d-flex mb-3">
-                                        <button id="rightServoUpButton" class="btn btn-primary mr-2"><i
-                                                class="fas fa-arrow-up"></i> Right Up</button>
-                                        <button id="rightServoDownButton" class="btn btn-primary mr-2"><i
-                                                class="fas fa-arrow-down"></i> Right Down</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <h2>Motor Status:</h2>
+                    <span id="motorStatus">Stopped</span>
 
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body shadow">
-                                    <h2 class="mb-3">Cylinder Control</h2>
-                                    <p class="mt-3">Cylinder Status: <span id="cylinderStatus"
-                                            class="badge badge-secondary">Stopped</span> </p>
+                    <!-- Cylinder Control -->
+                    <h2>Cylinder Control</h2>
+                    <label>Cylinder Status:</label>
+                    <button id="cylinderUpButton">Up</button>
+                    <button id="cylinderDownButton">Down</button>
+                    <button id="cylinderStopButton">Stop</button>
 
-                                    <div class="d-flex mb-3">
+                    <h2>Cylinder Status:</h2>
+                    <span id="cylinderStatus">Stopped</span>
 
-                                        <button id="cylinderUpButton" class="btn btn-primary mr-2"><i
-                                                class="fas fa-arrow-up"></i> Up</button>
-                                        <button id="cylinderDownButton" class="btn btn-primary mr-2"><i
-                                                class="fas fa-arrow-down"></i> Down</button>
-                                        <button id="cylinderStopButton" class="btn btn-danger"><i
-                                                class="fas fa-stop"></i>
-                                            Stop</button>
-                                    </div>
+                    <!-- LED Control -->
+                    <h2>LED Control</h2>
+                    <label>LED Status:</label>
+                    <span id="ledStatus">OFF</span>
+                    <button id="toggleLedButton">Toggle LED</button>    
+                    <br>
+                    <button id="turnOnLED1Button">Turn On LED1</button>
+                    <button id="turnOffLED1Button">Turn Off LED1</button>
+                    <br>
+                    <button id="turnOnLED2Button">Turn On LED2</button>
+                    <button id="turnOffLED2Button">Turn Off LED2</button>
 
-                                    <h2 class="mb-3">LED Control</h2>
-                                    <div class="d-flex mb-3">
-                                        <button id="toggleLedButton" class="btn btn-info mr-2"><i
-                                                class="fas fa-lightbulb"></i>
-                                            Toggle LED</button>
-                                    </div>
-                                    <div class="d-flex mb-3">
-                                        <button id="turnOnLED1Button" class="btn btn-success mr-2"><i
-                                                class="fas fa-power-off"></i> Turn On LED1</button>
-                                        <button id="turnOffLED1Button" class="btn btn-danger"><i
-                                                class="fas fa-power-off"></i>
-                                            Turn Off LED1</button>
-                                    </div>
-                                    <div class="d-flex mb-3">
-                                        <button id="turnOnLED2Button" class="btn btn-success mr-2"><i
-                                                class="fas fa-power-off"></i> Turn On LED2</button>
-                                        <button id="turnOffLED2Button" class="btn btn-danger"><i
-                                                class="fas fa-power-off"></i>
-                                            Turn Off LED2</button>
-                                    </div>
+                    <!-- Pump Control -->
+                    <h2>Pump Control</h2>
+                    <label>Pump Status:</label>
+                    <span id="pumpStatus">OFF</span>
+                    <button id="togglePumpButton">Toggle Pump</button>
+                    
+                    <!-- Servos Control -->
+                    <h2>Servos Control</h2>
+                    <button id="bothServosUpButton">Both Servos Up</button>
+                    <button id="bothServosDownButton">Both Servos Down</button>
+                    <br>
+                    <button id="leftServoUpButton">Left Servo Up</button>
+                    <button id="leftServoDownButton">Left Servo Down</button>
+                    <br>
+                    <button id="rightServoUpButton">Right Servo Up</button>
+                    <button id="rightServoDownButton">Right Servo Down</button>
+                    
+                    <!-- Read Soil Control -->
+                    <h2>Read Soil Control</h2>
+                    <button id="readSoilButton">Read Soil</button>
+                    <button id="useCylinderToReadSoilButton">Use Cylinder to Read Soil</button>
 
-                                    <h2 class="mb-3">Pump Control</h2>
-                                    <div class="d-flex mb-3">
-                                        <button id="togglePumpButton" class="btn btn-info mr-2"><i
-                                                class="fas fa-tint"></i>
-                                            Toggle Pump</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
 
                 </div>
-
                 <!-- /.container-fluid -->
             </div>
             <!-- End of Main Content -->
@@ -343,7 +294,7 @@
             const cylinderStatus = document.getElementById('cylinderStatus');
             let cylinderExtended = false;
 
-            const socket = new WebSocket("ws://automaticcropcaretaker.com/ws");
+            const socket = new WebSocket("ws://localhost:4000/ws");
 
             socket.addEventListener("open", () => {
                 console.log("WebSocket connection opened");

@@ -166,34 +166,9 @@ void loop() {
   if (Serial3.available()) {
     receiveDataAndRunCommands();
   }
-  readAndSendDataToESP();
-}
-
-void test_run() {
-  delay(5000);
-  bothServos(0);
-  delay(5000);
-  bothServos(1);
-  delay(5000);
-  bothMotors(1);
-  delay(5000);
-  bothMotors(0);
-  delay(5000);
-  bothMotors(-1);
-  delay(5000);
-  cylinder(2);
-  delay(5000);
-  cylinder(0);
-  delay(5000);
-  cylinder(1);
-  delay(5000);
-  pump(1);
-  delay(5000);
-  pump(0);
-  delay(5000);
-  bothLeds(1);
-  delay(5000);
-  bothLeds(0);
+  if (Serial1.available()) {
+    readAndSendDataToESP();
+  }
 }
 
 int getMedianNum(int bArray[], int iFilterLen) {
@@ -293,126 +268,6 @@ void readAndSendDataToESP() {
   }
 }
 
-void readSoil(int duration) {
-  static int readSoilTimepoint = millis();
-  while (millis() - readSoilTimepoint < duration) {
-    Serial.println("Read Data NPK 7 in 1 SENSOR: ID = 1");
-    node.begin(1, mySerial);
-    delay(300);
-
-    /*Read value PH*/
-    result = node.readHoldingRegisters(0x0006, 2);
-    // do something with data if read is successful
-    if (result == node.ku8MBSuccess) {
-      data[0] = node.receive();
-      ph = float(data[0]);
-      Serial.print("pH: ");
-      Serial.print(ph / 100);
-      Serial.println("pH");
-    }
-    delay(200);
-    /*Read value do am*/
-    result = node.readHoldingRegisters(0x0012, 2);
-    // do something with data if read is successful
-    if (result == node.ku8MBSuccess) {
-      data[0] = node.receive();
-      Humi = float(data[0]);
-      Serial.print("Do am dat: ");
-      Serial.print(Humi / 10);
-      Serial.println("%");
-    }
-    delay(500);
-    /*Read value nhiet do*/
-    result = node.readHoldingRegisters(0x0013, 2);
-    // do something with data if read is successful
-    if (result == node.ku8MBSuccess) {
-      data[0] = node.receive();
-      Temp = float(data[0]);
-      Serial.print("Nhiet do dat: ");
-      Serial.print(Temp / 10);
-      Serial.println("oC");
-    }
-    delay(200);
-
-    /*Read value Nito*/
-    result = node.readHoldingRegisters(0x001E, 2);
-    // do something with data if read is successful
-    if (result == node.ku8MBSuccess) {
-      data[0] = node.receive();
-      Nito = float(data[0]);
-      Serial.print("Nito Value: ");
-      Serial.print(Nito);
-      Serial.println("mg/Kg");
-    }
-    delay(200);
-    /*Read value Photpho*/
-    result = node.readHoldingRegisters(0x001F, 2);
-    // do something with data if read is successful
-    if (result == node.ku8MBSuccess) {
-      data[0] = node.receive();
-      Photpho = float(data[0]);
-      Serial.print("Photpho Value: ");
-      Serial.print(Photpho);
-      Serial.println("mg/Kg");
-    }
-    delay(200);
-
-    /*Read value Kali*/
-    result = node.readHoldingRegisters(0x0020, 2);
-    // do something with data if read is successful
-    if (result == node.ku8MBSuccess) {
-      data[0] = node.receive();
-      Kali = float(data[0]);
-      Serial.print("Kali Value: ");
-      Serial.print(Kali);
-      Serial.println("mg/Kg");
-    }
-    /*Read value do dan dien*/
-    result = node.readHoldingRegisters(0x0021, 2);
-    // do something with data if read is successful
-    if (result == node.ku8MBSuccess) {
-      data[0] = node.receive();
-      EC = float(data[0]);
-      Serial.print("Do dan dien: ");
-      Serial.print(EC);
-      Serial.println("us/cm");
-    }
-    delay(200);
-
-    StaticJsonDocument<200> jsonDoc;
-
-    // Populate the JSON object with sensor data
-    jsonDoc["type"] = "sensors_data";
-    jsonDoc["pHsoil"] = ph / 100;
-    jsonDoc["Humsoil"] = Humi / 10;
-    jsonDoc["Tempsoil"] = Temp / 10;
-    jsonDoc["Nitrogen"] = Nito;
-    jsonDoc["Phosphorus"] = Photpho;
-    jsonDoc["Potassium"] = Kali;
-    jsonDoc["EC"] = EC;
-
-    // Serialize the JSON to a string
-    String jsonString;
-    serializeJson(jsonDoc, jsonString);
-
-    // Send the JSON string over Serial1 to the ESP8266
-    Serial1.print("Sensors_data: " + jsonString + "\n");
-  }
-}
-
-void cylinderToReadSoil() {
-  bothMotorsWithSpeed(0, left_motor_speed, right_motor_speed);
-  delay(1000);
-  cylinder(-1);
-  delay(7000);
-  readSoil(300000);
-  cylinder(1);
-  delay(5000);
-  cylinder(0);
-  delay(1000);
-  bothMotorsWithSpeed(motors_state, left_motor_speed, right_motor_speed);
-}
-
 void receiveDataAndRunCommands() {
   String data = Serial3.readStringUntil('\n');
   Serial.println(data);
@@ -428,6 +283,10 @@ void receiveDataAndRunCommands() {
       int speed1 = doc["speed1"].as<int>();
       int speed2 = doc["speed2"].as<int>();
       bothMotorsWithSpeed(direction, speed1, speed2);
+    } else if (commandType == "left_motor") {
+      leftMotor(direction);
+    } else if (commandType == "right_motor") {
+      rightMotor(direction);
     } else if (commandType == "cylinder") {
       cylinder(direction);
     } else if (commandType == "pump") {
@@ -452,6 +311,10 @@ void receiveDataAndRunCommands() {
           bothServos(direction);
         }
       }
+    } else if (commandType == "led1") {
+      led1(direction);
+    } else if (commandType == "led2") {
+      led2(direction);
     } else if (commandType == "left_servo") {
       leftServo(direction);
     } else if (commandType == "right_servo") {
@@ -647,4 +510,124 @@ void led2(int direction) {
 int toSpeed(int percent) {
   Serial.println(round(abs((float)percent) / 100 * 255));
   return round(abs((float)percent) / 100 * 255);
+}
+
+void readSoil(int duration) {
+  static int readSoilTimepoint = millis();
+  while (millis() - readSoilTimepoint < duration) {
+    Serial.println("Read Data NPK 7 in 1 SENSOR: ID = 1");
+    node.begin(1, mySerial);
+    delay(300);
+
+    /*Read value PH*/
+    result = node.readHoldingRegisters(0x0006, 2);
+    // do something with data if read is successful
+    if (result == node.ku8MBSuccess) {
+      data[0] = node.receive();
+      ph = float(data[0]);
+      Serial.print("pH: ");
+      Serial.print(ph / 100);
+      Serial.println("pH");
+    }
+    delay(200);
+    /*Read value do am*/
+    result = node.readHoldingRegisters(0x0012, 2);
+    // do something with data if read is successful
+    if (result == node.ku8MBSuccess) {
+      data[0] = node.receive();
+      Humi = float(data[0]);
+      Serial.print("Do am dat: ");
+      Serial.print(Humi / 10);
+      Serial.println("%");
+    }
+    delay(500);
+    /*Read value nhiet do*/
+    result = node.readHoldingRegisters(0x0013, 2);
+    // do something with data if read is successful
+    if (result == node.ku8MBSuccess) {
+      data[0] = node.receive();
+      Temp = float(data[0]);
+      Serial.print("Nhiet do dat: ");
+      Serial.print(Temp / 10);
+      Serial.println("oC");
+    }
+    delay(200);
+
+    /*Read value Nito*/
+    result = node.readHoldingRegisters(0x001E, 2);
+    // do something with data if read is successful
+    if (result == node.ku8MBSuccess) {
+      data[0] = node.receive();
+      Nito = float(data[0]);
+      Serial.print("Nito Value: ");
+      Serial.print(Nito);
+      Serial.println("mg/Kg");
+    }
+    delay(200);
+    /*Read value Photpho*/
+    result = node.readHoldingRegisters(0x001F, 2);
+    // do something with data if read is successful
+    if (result == node.ku8MBSuccess) {
+      data[0] = node.receive();
+      Photpho = float(data[0]);
+      Serial.print("Photpho Value: ");
+      Serial.print(Photpho);
+      Serial.println("mg/Kg");
+    }
+    delay(200);
+
+    /*Read value Kali*/
+    result = node.readHoldingRegisters(0x0020, 2);
+    // do something with data if read is successful
+    if (result == node.ku8MBSuccess) {
+      data[0] = node.receive();
+      Kali = float(data[0]);
+      Serial.print("Kali Value: ");
+      Serial.print(Kali);
+      Serial.println("mg/Kg");
+    }
+    /*Read value do dan dien*/
+    result = node.readHoldingRegisters(0x0021, 2);
+    // do something with data if read is successful
+    if (result == node.ku8MBSuccess) {
+      data[0] = node.receive();
+      EC = float(data[0]);
+      Serial.print("Do dan dien: ");
+      Serial.print(EC);
+      Serial.println("us/cm");
+    }
+    delay(200);
+
+    StaticJsonDocument<200> jsonDoc;
+
+    // Populate the JSON object with sensor data
+    jsonDoc["type"] = "sensors_data";
+    jsonDoc["pHsoil"] = ph / 100;
+    jsonDoc["Humsoil"] = Humi / 10;
+    jsonDoc["Tempsoil"] = Temp / 10;
+    jsonDoc["Nitrogen"] = Nito;
+    jsonDoc["Phosphorus"] = Photpho;
+    jsonDoc["Potassium"] = Kali;
+    jsonDoc["EC"] = EC;
+
+    // Serialize the JSON to a string
+    String jsonString;
+    serializeJson(jsonDoc, jsonString);
+
+    // Send the JSON string over Serial1 to the ESP8266
+    Serial1.print("Sensors_data: " + jsonString + "\n");
+  }
+}
+
+void cylinderToReadSoil() {
+  bothMotorsWithSpeed(0, left_motor_speed, right_motor_speed);
+  delay(1000);
+  cylinder(-1);
+  delay(7000);
+  readSoil(300000);
+  cylinder(1);
+  delay(5000);
+  cylinder(0);
+  delay(1000);
+  bothMotorsWithSpeed(motors_state, left_motor_speed, right_motor_speed);
 }
