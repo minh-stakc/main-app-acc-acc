@@ -1,23 +1,22 @@
 const express = require("express");
 const cors = require("cors");
-const path = require('path');
+const path = require("path");
 const mongoose = require("mongoose");
 const User = require("./models/User.js");
-const TestCrops = require('./models/TestCrops.js');
+const TestCrops = require("./models/TestCrops.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const { default: axios } = require("axios");
-const {spawn} = require('child_process');
+const { spawn } = require("child_process");
 const app = express();
-const bcryptSalt =  bcrypt.genSaltSync(10);
-const jwtSecret = 'f8u230f20u203f20i3o';
-const APIkey = 'd19a1eac74129a54df64265af607e433';
+const bcryptSalt = bcrypt.genSaltSync(10);
+const jwtSecret = "f8u230f20u203f20i3o";
+const APIkey = "d19a1eac74129a54df64265af607e433";
 
 const expressWs = require("express-ws");
 expressWs(app);
 const clientConnections = [];
-
 
 let PH = [];
 let TDS = [];
@@ -58,15 +57,15 @@ let cropRecommendation;
 require("dotenv").config();
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
+app.use(
+  cors({
     credentials: true,
-    // origin: ['http://localhost:4000'],
-    origin: ['http://automaticcropcaretaker.com'],
-}));
-app.set('view engine', 'ejs');
-app.use(express.static(path.join(__dirname, 'public')));
-
-
+    origin: ["http://localhost:4000"],
+    // origin: ['http://automaticcropcaretaker.com'],
+  })
+);
+app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "public")));
 
 // WebSocket route for communication with ESP8266
 app.ws("/ws", (ws, req) => {
@@ -75,7 +74,7 @@ app.ws("/ws", (ws, req) => {
   ws.on("message", (msg) => {
     console.log("Message from client:", msg);
     const data = JSON.parse(msg);
-    if(data.type == "sensors_data"){
+    if (data["type"] == "sensors_data") {
       latestPH = data["PH"];
       latestTDS = data["TDS"];
       latestLux = data["Lux"];
@@ -128,116 +127,124 @@ app.ws("/ws", (ws, req) => {
     sendEventToClients(data);
   });
 });
+
 function sendEventToClients(eventData) {
   for (const connection of clientConnections) {
     connection.send(JSON.stringify(eventData));
   }
 }
 
-
-
-
 //register
-app.get('/', (req, res) => {
-  res.render('login.ejs');
+app.get("/", (req, res) => {
+  res.render("login.ejs");
 });
-app.post('/login', async (req, res) => {
-  const {email, password} = req.body;
-  console.log(email, password)
-  const userDoc = await User.findOne({email});
-  if (userDoc){
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  console.log(email, password);
+  const userDoc = await User.findOne({ email });
+  if (userDoc) {
     const pass0k = bcrypt.compareSync(password, userDoc.password);
-    if (pass0k){
-      jwt.sign({
-        email:userDoc.email, 
-        id:userDoc._id, 
-        firstname:userDoc.firstname,
-        lastname:userDoc.lastname,
-        address:userDoc.address}, 
-        jwtSecret, {}, (err, token) => {
-        if (err) throw err;
-        res.cookie('token', token).json(userDoc)
-        res.redirect('/dashboard');
-      })
-    } else{
-      res.status(422).json('pass not ok')
+    if (pass0k) {
+      jwt.sign(
+        {
+          email: userDoc.email,
+          id: userDoc._id,
+          firstname: userDoc.firstname,
+          lastname: userDoc.lastname,
+          address: userDoc.address,
+        },
+        jwtSecret,
+        {},
+        (err, token) => {
+          if (err) throw err;
+          res.cookie("token", token).json(userDoc);
+          res.redirect("/dashboard");
+        }
+      );
+    } else {
+      res.status(422).json("pass not ok");
     }
-  } else{
-    res.status(404).json('Not found!')
+  } else {
+    res.status(404).json("Not found!");
   }
 });
 //login
-app.get('/register', (req, res) => {
-  res.render('register.ejs'); 
+app.get("/register", (req, res) => {
+  res.render("register.ejs");
 });
-app.post('/register', async (req, res) => {
-    const {firstname, lastname, address, email, password} = req.body
-    try{
-      const userDoc = await User.create({
-        firstname,
-        lastname,
-        address,
-        email,
-        password:bcrypt.hashSync(password, bcryptSalt),
-      })
-      res.json(userDoc)
-      res.redirect('/');
-    } catch (e) {
-      res.status(422).json(e);
-    }
+app.post("/register", async (req, res) => {
+  const { firstname, lastname, address, email, password } = req.body;
+  try {
+    const userDoc = await User.create({
+      firstname,
+      lastname,
+      address,
+      email,
+      password: bcrypt.hashSync(password, bcryptSalt),
+    });
+    res.json(userDoc);
+    res.redirect("/");
+  } catch (e) {
+    res.status(422).json(e);
+  }
 });
 
 //mongo
 mongoose.connect(process.env.MONGOOSE_URL);
 const connection = mongoose.connection;
-connection.once('open', () => {
+connection.once("open", () => {
   console.log("MongoDB database connection established successfully");
 });
 
-
-
-
-
 //prediction
 function predict(inputdata, callback) {
-  const childPython = spawn('python', inputdata);
-  let prediction = '';
-  childPython.stdout.on('data', (data) => {
+  const childPython = spawn("python", inputdata);
+  let prediction = "";
+  childPython.stdout.on("data", (data) => {
     console.log(`stdout: ${data}`);
-    prediction += data;});
-  childPython.stderr.on('data', (data) => {
-    console.log(`stderr: ${data}`);});
-  childPython.on('close', (code) => {
+    prediction += data;
+  });
+  childPython.stderr.on("data", (data) => {
+    console.log(`stderr: ${data}`);
+  });
+  childPython.on("close", (code) => {
     console.log(`exited with code ${code}`);
-    callback(prediction.trim());});
-};
-
-
-
-
+    callback(prediction.trim());
+  });
+}
 
 //dashboard
-app.get('/dashboard', (req, res) => {
-  const {token} = req.cookies
-  if(token){
+app.get("/dashboard", (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
-      const {firstname, lastname, email, _id} = await User.findById(userData.id);
-      axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${userData.address}&appid=${APIkey}`)
-        .then((response) => {rainfall = response.data.rain*4 ? response.data.rain["1h"]*4 || 0 : 0;})
+      const { firstname, lastname, email, _id } = await User.findById(
+        userData.id
+      );
+      axios
+        .get(
+          `https://api.openweathermap.org/data/2.5/weather?q=${userData.address}&appid=${APIkey}`
+        )
+        .then((response) => {
+          rainfall =
+            response.data.rain * 4 ? response.data.rain["1h"] * 4 || 0 : 0;
+        })
         .catch((err) => {
           console.error(err);
-          res.status(500).json({ error: 'An error occurred while fetching weather data' });
-        });    
-      res.render('index.ejs', {firstname, lastname, email, _id});
-    })
-  } else{
-    res.redirect('/');
+          res
+            .status(500)
+            .json({ error: "An error occurred while fetching weather data" });
+        });
+      res.render("index.ejs", { firstname, lastname, email, _id });
+    });
+  } else {
+    res.redirect("/");
   }
 });
-app.get('/api/getDashboardData', (req,res) => {
-  const {token} = req.cookies;
-  if(token){
+app.get("/api/getDashboardData", (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
       const data = {
@@ -258,27 +265,56 @@ app.get('/api/getDashboardData', (req,res) => {
         latestTempsoil,
         latestHumsoil,
         rainfall,
-      };res.json(data);
+      };
+      res.json(data);
     });
-  } else{
-  res.json(null)}
+  } else {
+    res.json(null);
+  }
 });
-app.post('/api/getPredictionData', async (req, res) => {
+app.post("/api/getPredictionData", async (req, res) => {
   const { token } = req.cookies;
   console.log(token);
-  const {soiltype, croptype} = req.body
-  if(token){
+  const { soiltype, croptype } = req.body;
+  if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
       //going through an AI model
       console.log(soiltype, croptype);
-      predict(['crop.py', latestNitrogen, latestPhosphorus, latestPotassium ,latestTemperature ,latestHumidity, latestPH ,rainfall], (prediction) => {
-        console.log('Prediction:', prediction);
-        cropRecommendation = prediction;}); 
-      predict(['fertilizer.py', latestTemperature , latestHumidity , latestHumsoil ,soiltype ,croptype, latestNitrogen, latestPhosphorus, latestPotassium], (prediction) => {
-        console.log('Prediction:', prediction);
-        fertilizerRecommendation = prediction;}); 
-      let data = {cropRecommendation, fertilizerRecommendation};
+      predict(
+        [
+          "crop.py",
+          latestNitrogen,
+          latestPhosphorus,
+          latestPotassium,
+          latestTemperature,
+          latestHumidity,
+          latestPH,
+          rainfall,
+        ],
+        (prediction) => {
+          console.log("Prediction:", prediction);
+          cropRecommendation = prediction;
+        }
+      );
+      predict(
+        [
+          "fertilizer.py",
+          latestTemperature,
+          latestHumidity,
+          latestHumsoil,
+          soiltype,
+          croptype,
+          latestNitrogen,
+          latestPhosphorus,
+          latestPotassium,
+        ],
+        (prediction) => {
+          console.log("Prediction:", prediction);
+          fertilizerRecommendation = prediction;
+        }
+      );
+      let data = { cropRecommendation, fertilizerRecommendation };
       TestCrops.create({
         latestPH,
         latestTDS,
@@ -304,35 +340,38 @@ app.post('/api/getPredictionData', async (req, res) => {
         author: userData.id,
       }).catch((err) => {
         console.error(err);
-        res.status(500).json({ error: 'An error occurred while creating the test document' });
+        res
+          .status(500)
+          .json({
+            error: "An error occurred while creating the test document",
+          });
       });
       res.json(data);
     });
-  } else{
-    res.json(null)}
+  } else {
+    res.json(null);
+  }
 });
-
-
-
 
 //charts
-app.get('/charts', (req,res) => {
-  const {token} = req.cookies;
-  if(token){
+app.get("/charts", (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
-      const {id, firstname, lastname} = userData;
-      res.render('charts.ejs', {firstname, lastname});
+      const { id, firstname, lastname } = userData;
+      res.render("charts.ejs", { firstname, lastname });
     });
-  } else{
-  res.json(null)}
+  } else {
+    res.json(null);
+  }
 });
-app.get('/api/getChartData', (req, res) => {
-  const {token} = req.cookies
-  if(token){
+app.get("/api/getChartData", (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
       const data = {
-        PH:100,
+        PH: 100,
         TDS,
         Lux,
         Humidity,
@@ -348,48 +387,43 @@ app.get('/api/getChartData', (req, res) => {
         EC,
         Tempsoil,
         Humsoil,
-      };      
-      res.json(data)
-    })
-  } else{
-    res.redirect('/');
+      };
+      res.json(data);
+    });
+  } else {
+    res.redirect("/");
   }
 });
-
-
 
 //manual
-app.get('/manual', (req, res) => {
-  const {token} = req.cookies
-  if(token){
+app.get("/manual", (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
-      const {firstname, lastname, email, _id} = await User.findById(userData.id);
-      res.render('manual.ejs', {firstname, lastname, email, _id});
-    })
-  } else{
-    res.redirect('/');
+      const { firstname, lastname, email, _id } = await User.findById(
+        userData.id
+      );
+      res.render("manual.ejs", { firstname, lastname, email, _id });
+    });
+  } else {
+    res.redirect("/");
   }
 });
 
-
-
-
 //tables
-app.get('/tables', (req,res) => {
-  const {token} = req.cookies;
-  if(token){
+app.get("/tables", (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
-      const {id, firstname, lastname} = userData;
-      const data = await TestCrops.find({author:id})
-      res.render('tables.ejs' ,{data, firstname, lastname} );
+      const { id, firstname, lastname } = userData;
+      const data = await TestCrops.find({ author: id });
+      res.render("tables.ejs", { data, firstname, lastname });
     });
-  } else{
-  res.json(null)}
+  } else {
+    res.json(null);
+  }
 });
-
-
-
 
 // app.post('/api/test', (req, res) => {
 //   const { token } = req.cookies;
@@ -408,10 +442,9 @@ app.get('/tables', (req,res) => {
 //   } else{
 //   res.json(null)}
 // });
-          
-app.post('/api/logout', (req, res) => {
-  res.cookie('token', '').json(true);
-});
 
+app.post("/api/logout", (req, res) => {
+  res.cookie("token", "").json(true);
+});
 
 app.listen(4000);
