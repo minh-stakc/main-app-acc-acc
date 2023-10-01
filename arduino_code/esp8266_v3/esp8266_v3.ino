@@ -16,13 +16,16 @@ const char *password2 = "66668888";
 const char *ssid3 = "WiFi Poop";
 const char *password3 = "CircularShit";
 
-const char* ssids[] = {ssid, ssid2, ssid3};
-const char* passwords[] = {password, password2, password3};
+// const char* ssids[] = {ssid, ssid2, ssid3};
+// const char* passwords[] = {password, password2, password3};
 
 const char *serverAddress = "automaticcropcaretaker.com";
 const int serverPort = 80;
 const char *serverURL = "/ws";
 const char *serverProtocol = "arduino";
+
+// const char *serverAddress = "192.168.100.99";
+// const int serverPort = 4000;
 
 void setupWiFi() {
   WiFi.mode(WIFI_STA);

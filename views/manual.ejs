@@ -376,8 +376,8 @@
             let cylinderExtended = false;
             let readSoilState = false;
 
-            const socket = new WebSocket("ws://localhost:4000/ws");
-            // const socket = new WebSocket("ws://automaticcropcaretaker.com/ws");
+            // const socket = new WebSocket("ws://localhost:4000/ws");
+            const socket = new WebSocket("ws://automaticcropcaretaker.com/ws");
 
             socket.addEventListener("open", () => {
                 console.log("WebSocket connection opened");
