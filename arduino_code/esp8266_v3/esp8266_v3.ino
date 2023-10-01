@@ -6,15 +6,18 @@
 
 WebSocketsClient webSocket;
 ESP8266WiFiMulti WiFiMulti;
-SoftwareSerial receiverSerial(D1, D2);
+// SoftwareSerial senderSerial(D1, D2);
 SoftwareSerial senderSerial(D5, D6);
 
-// const char *ssid = "American Study";
-// const char *password = "66668888";
+const char *ssid = "American Study";
+const char *password = "66668888";
 const char *ssid2 = "AmericanStudy T1";
 const char *password2 = "66668888";
-// const char *ssid3 = "WiFi Poop";
-// const char *password3 = "CircularShit";
+const char *ssid3 = "WiFi Poop";
+const char *password3 = "CircularShit";
+
+const char* ssids[] = {ssid, ssid2, ssid3};
+const char* passwords[] = {password, password2, password3};
 
 const char *serverAddress = "automaticcropcaretaker.com";
 const int serverPort = 80;
@@ -23,9 +26,9 @@ const char *serverProtocol = "arduino";
 
 void setupWiFi() {
   WiFi.mode(WIFI_STA);
-  // WiFiMulti.addAP(ssid, password);
+  WiFiMulti.addAP(ssid, password);
   WiFiMulti.addAP(ssid2, password2);
-  // WiFiMulti.addAP(ssid3, password3);
+  WiFiMulti.addAP(ssid3, password3);
 
   while (WiFiMulti.run() != WL_CONNECTED) {
     delay(1000);
@@ -44,7 +47,6 @@ void setupWebSocket() {
 
 void setup() {
   Serial.begin(9600);
-  receiverSerial.begin(9600);
   senderSerial.begin(9600);
   Serial.println("\n[SETUP] BOOT");
   setupWiFi();
@@ -53,7 +55,7 @@ void setup() {
 
 void loop() {
   webSocket.loop();
-  if (receiverSerial.available()) {
+  if (senderSerial.available()) {
     receiveDataAndSendToServer();
   }
 }
@@ -63,8 +65,8 @@ void sendDataToServer(String data) {
 }
 
 void receiveDataAndSendToServer() {
-  String data = receiverSerial.readStringUntil('\n');  // Read the JSON string from Serial
-  Serial.println(data);
+  String data = senderSerial.readStringUntil('\n');  // Read the JSON string from Serial
+  // Serial.println(data);
   // Check if the received data starts with "Sensors_data:"
   if (data.startsWith("Sensors_data:")) {
     // Extract the JSON part from the input string
@@ -81,6 +83,7 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
       break;
     case WStype_CONNECTED:
       Serial.println("WebSocket connected");
+      sendDataToServer((String)"{\"type\":\"connection\",\"data\":\"ESP8266\"}");
       break;
     case WStype_TEXT:
       Serial.print("Received message: ");

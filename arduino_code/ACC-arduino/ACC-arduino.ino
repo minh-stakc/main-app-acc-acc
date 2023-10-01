@@ -1,6 +1,7 @@
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
 #include "MQ135.h"
+
 #include <GP2YDustSensor.h>
 #include "DFRobot_PH.h"
 #include <EEPROM.h>
@@ -83,7 +84,7 @@ void setup() {
   // debug serial
   Serial.begin(9600);
   // sender serial
-  Serial1.begin(9600);
+  Serial3.begin(9600);
   // arduino uno/npk value receiver serial
   // Serial2.begin(9600);
   // esp8266 commands receiver serial
@@ -163,11 +164,9 @@ void setup() {
 }
 
 void loop() {
+  readAndSendDataToESP();
   if (Serial3.available()) {
     receiveDataAndRunCommands();
-  }
-  if (Serial1.available()) {
-    readAndSendDataToESP();
   }
 }
 
@@ -263,8 +262,9 @@ void readAndSendDataToESP() {
     String jsonString;
     serializeJson(jsonDoc, jsonString);
 
-    // Send the JSON string over Serial1 to the ESP8266
-    Serial1.print("Sensors_data: " + jsonString + "\n");
+    // Send the JSON string over Serial3 to the ESP8266
+    Serial3.print("Sensors_data: " + jsonString + "\n");
+    Serial.print("Sensors_data: " + jsonString + "\n");
   }
 }
 
@@ -614,8 +614,8 @@ void readSoil(int duration) {
     String jsonString;
     serializeJson(jsonDoc, jsonString);
 
-    // Send the JSON string over Serial1 to the ESP8266
-    Serial1.print("Sensors_data: " + jsonString + "\n");
+    // Send the JSON string over Serial3 to the ESP8266
+    Serial3.print("Sensors_data: " + jsonString + "\n");
   }
 }
 
