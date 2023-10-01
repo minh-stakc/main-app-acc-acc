@@ -20,7 +20,21 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .status-forward {
+            background-color: green;
+        }
 
+        .status-backward {
+            background-color: red;
+        }
+
+        .status-stopped {
+            background-color: gray;
+        }
+
+        /* You can add more status styles if needed */
+    </style>
 </head>
 
 <body id="page-top">
@@ -339,9 +353,6 @@
     </div>
     <!-- End of Page Wrapper -->
     <script>
-
-
-
         document.addEventListener('DOMContentLoaded', () => {
 
             const LED1Status = document.getElementById('LED1Status');
@@ -365,30 +376,22 @@
             let cylinderExtended = false;
             let readSoilState = false;
 
-            // const socket = new WebSocket("ws://localhost:4000/ws");
-            const socket = new WebSocket("ws://automaticcropcaretaker.com/ws");
+            const socket = new WebSocket("ws://localhost:4000/ws");
+            // const socket = new WebSocket("ws://automaticcropcaretaker.com/ws");
 
             socket.addEventListener("open", () => {
                 console.log("WebSocket connection opened");
+                const data = {
+                    type: "connection",
+                    data: "website/manual",
+                };
+                socket.send(JSON.stringify(data));
             });
 
             socket.addEventListener("message", (event) => {
                 console.log("Message received from server:", event.data);
             });
 
-            // toggleLedButton.addEventListener('click', () => {
-            //     if (ledOn) {
-            //         // Turn off the LED
-            //         turnOffBothLEDs();
-            //     } else {
-            //         // Turn on the LED
-            //         turnOnBothLEDs();
-            //     }
-
-            //     // Toggle the LED status
-            //     ledOn = !ledOn;
-            //     ledStatus.textContent = ledOn ? 'ON' : 'OFF';
-            // });
             togglePumpButton.addEventListener('click', () => {
                 if (pumpOn) {
                     // Turn off the pump
@@ -409,6 +412,8 @@
                 leftMotorStatus.textContent = 'Forward';
                 rightMotorStatus.textContent = 'Forward';
                 // motorState = 'Running Forward';
+                updateStatusColor(leftMotorStatus, 'Forward');
+                updateStatusColor(rightMotorStatus, 'Forward');
             });
             backwardButton.addEventListener('click', () => {
                 // Drive base backward
@@ -416,6 +421,8 @@
                 // Update motor status
                 leftMotorStatus.textContent = 'Backward';
                 rightMotorStatus.textContent = 'Backward';
+                updateStatusColor(leftMotorStatus, 'Backward');
+                updateStatusColor(rightMotorStatus, 'Backward');
                 // motorState = 'Running Backward';
             });
             stopButton.addEventListener('click', () => {
@@ -424,6 +431,8 @@
                 // Update motor status
                 leftMotorStatus.textContent = 'Stopped';
                 rightMotorStatus.textContent = 'Stopped';
+                updateStatusColor(leftMotorStatus, 'Stopped');
+                updateStatusColor(rightMotorStatus, 'Stopped');
                 motorState = 'Stopped';
             });
 
@@ -452,6 +461,7 @@
                 retractCylinder();
                 // Update motor status
                 cylinderStatus.textContent = 'Retracting';
+                updateStatusColor(cylinderStatus, 'Retracting');
             });
 
             cylinderDownButton.addEventListener('click', () => {
@@ -459,6 +469,7 @@
                 extendCylinder();
                 // Update motor status
                 cylinderStatus.textContent = 'Extending';
+                updateStatusColor(cylinderStatus, 'Extending');
             });
 
             cylinderStopButton.addEventListener('click', () => {
@@ -466,6 +477,7 @@
                 stopCylinder();
                 // Update motor status
                 cylinderStatus.textContent = 'Stopped';
+                updateStatusColor(cylinderStatus, 'Stopped');
             });
 
             //both_servos func
@@ -477,6 +489,8 @@
                 socket.send(JSON.stringify(data));
                 leftServoStatus.textContent = 'Up';
                 rightServoStatus.textContent = 'Up';
+                updateStatusColor(leftServoStatus, 'Up');
+                updateStatusColor(rightServoStatus, 'Up');
             }
 
             function bothServosDown() {
@@ -487,6 +501,8 @@
                 socket.send(JSON.stringify(data));
                 leftServoStatus.textContent = 'Down';
                 rightServoStatus.textContent = 'Down';
+                updateStatusColor(leftServoStatus, 'Stopped');
+                updateStatusColor(rightServoStatus, 'Stopped');
             }
 
             //left_servo func
@@ -497,6 +513,8 @@
                 };
                 socket.send(JSON.stringify(data));
                 leftServoStatus.textContent = 'Up';
+                updateStatusColor(leftServoStatus, 'Up');
+
             }
 
             function leftServoDown() {
@@ -506,6 +524,8 @@
                 };
                 socket.send(JSON.stringify(data));
                 leftServoStatus.textContent = 'Down';
+                updateStatusColor(leftServoStatus, 'Stopped');
+
             }
 
             //right_servo func
@@ -516,6 +536,8 @@
                 };
                 socket.send(JSON.stringify(data));
                 rightServoStatus.textContent = 'Up';
+                updateStatusColor(rightServoStatus, 'Up');
+
             }
 
             function rightServoDown() {
@@ -525,6 +547,8 @@
                 };
                 socket.send(JSON.stringify(data));
                 rightServoStatus.textContent = 'Down';
+                updateStatusColor(rightServoStatus, 'Stopped');
+
             }
 
             //cylinder func
@@ -582,6 +606,8 @@
                 const data = {
                     type: "control/both_motors",
                     direction: 0,
+                    speed1: 0,
+                    speed2: 0,
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is stopped');
@@ -596,6 +622,8 @@
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is moving forward');
                 leftMotorStatus.textContent = 'Forward';
+                updateStatusColor(leftMotorStatus, 'Forward');
+
             }
 
             function leftMotorBackward() {
@@ -606,6 +634,8 @@
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is moving backward');
                 leftMotorStatus.textContent = 'Backward';
+                updateStatusColor(leftMotorStatus, 'Backward');
+
             }
 
             function leftMotorStop() {
@@ -616,6 +646,7 @@
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is stopped');
                 leftMotorStatus.textContent = 'Stopped';
+                updateStatusColor(leftMotorStatus, 'Stopped');
             }
 
             //right_motor func
@@ -627,6 +658,7 @@
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is moving forward');
                 rightMotorStatus.textContent = 'Forward';
+                updateStatusColor(rightMotorStatus, 'Forward');
 
             }
 
@@ -638,6 +670,7 @@
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is moving backward');
                 rightMotorStatus.textContent = 'Backward';
+                updateStatusColor(rightMotorStatus, 'Backward');
 
             }
 
@@ -649,6 +682,7 @@
                 socket.send(JSON.stringify(data));
                 console.log('Drive base is stopped');
                 rightMotorStatus.textContent = 'Stopped';
+                updateStatusColor(rightMotorStatus, 'Stopped');
 
             }
 
@@ -660,6 +694,7 @@
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Pump is ON');
+                updateStatusColor(pumpStatus, 'ON');
             }
 
             function turnOffPump() {
@@ -669,6 +704,7 @@
                 };
                 socket.send(JSON.stringify(data));
                 console.log('Pump is OFF');
+                updateStatusColor(pumpStatus, 'OFF');
             }
 
             //led1, led2 func
@@ -680,6 +716,7 @@
                 socket.send(JSON.stringify(data));
                 console.log('LED is ON');
                 LED1Status.textContent = 'ON';
+                updateStatusColor(LED1Status, 'ON');
             }
 
             function turnOffLED1() {
@@ -690,6 +727,7 @@
                 socket.send(JSON.stringify(data));
                 console.log('LED is OFF');
                 LED1Status.textContent = 'OFF';
+                updateStatusColor(LED1Status, 'OFF');
             }
 
             function turnOnLED2() {
@@ -700,8 +738,9 @@
                 socket.send(JSON.stringify(data));
                 console.log('LED is ON');
                 LED2Status.textContent = 'ON';
+                updateStatusColor(LED2Status, 'ON');
             }
-            
+
             function turnOffLED2() {
                 const data = {
                     type: "control/led2",
@@ -710,26 +749,27 @@
                 socket.send(JSON.stringify(data));
                 console.log('LED is OFF');
                 LED2Status.textContent = 'OFF';
+                updateStatusColor(LED2Status, 'OFF');
             }
 
             //both_leds
-            function turnOnBothLEDs() {
-                const data = {
-                    type: "control/both_leds",
-                    direction: 1,
-                };
-                socket.send(JSON.stringify(data));
-                console.log('LED is ON');
-            }
+            // function turnOnBothLEDs() {
+            //     const data = {
+            //         type: "control/both_leds",
+            //         direction: 1,
+            //     };
+            //     socket.send(JSON.stringify(data));
+            //     console.log('LED is ON');
+            // }
 
-            function turnOffBothLEDs() {
-                const data = {
-                    type: "control/both_leds",
-                    direction: 0,
-                };
-                socket.send(JSON.stringify(data));
-                console.log('LED is OFF');
-            }
+            // function turnOffBothLEDs() {
+            //     const data = {
+            //         type: "control/both_leds",
+            //         direction: 0,
+            //     };
+            //     socket.send(JSON.stringify(data));
+            //     console.log('LED is OFF');
+            // }
 
             //read_soil func
             function readSoil() {
@@ -740,6 +780,7 @@
                 socket.send(JSON.stringify(data));
                 console.log('Reading soil data for 30 secs');
                 readSoilStatus.textContent = 'Reading';
+                updateStatusColor(readSoilStatus, 'Reading');
             }
             function stopReading() {
                 const data = {
@@ -749,6 +790,7 @@
                 socket.send(JSON.stringify(data));
                 console.log('Stop reading soil data');
                 readSoilStatus.textContent = 'Stopped';
+                updateStatusColor(readSoilStatus, 'Stopped');
             }
 
             function useCylinderToReadSoil() {
@@ -758,6 +800,22 @@
                 socket.send(JSON.stringify(data));
                 console.log('Reading soil data for 5 mins');
                 readSoilStatus.textContent = 'Reading';
+                updateStatusColor(readSoilStatus, 'Reading');
+            }
+
+            function updateStatusColor(element, status) {
+                // first, clear all status classes
+                element.classList.remove('status-forward', 'status-backward', 'status-stopped');
+
+                // now, apply the appropriate class based on the status
+                if (status === 'Forward' || status === 'Retracting' || status === 'ON' || status === 'Reading' || status === 'Up') {
+                    element.classList.add('status-forward');
+                } else if (status === 'Backward' || status === 'Extending' || status === 'Down') {
+                    element.classList.add('status-backward');
+                } else if (status === 'Stopped' || status === 'OFF') {
+                    element.classList.add('status-stopped');
+                }
+                // you can expand this for other statuses if needed
             }
 
             document.getElementById('bothServosUpButton').addEventListener('click', bothServosUp);
