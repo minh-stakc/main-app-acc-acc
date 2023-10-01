@@ -258,6 +258,8 @@
     <script src="js/demo/chart-bar-demo.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/3.0.1/chartjs-plugin-annotation.min.js" integrity="sha512-Hn1w6YiiFw6p6S2lXv6yKeqTk0PLVzeCwWY9n32beuPjQ5HLcvz5l2QsP+KilEr1ws37rCTw3bZpvfvVIeTh0Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- <script src="node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js"></script> -->
       <script>
           document.getElementById('logoutBtn').addEventListener('click', handleLogout);
           function handleLogout() {
@@ -272,53 +274,55 @@
           }
       </script>
 
-        <script>
-            const chartVariables = [
-                { chartId: 'myChartPH', label: 'pH' },
-                { chartId: 'myChartTDS', label: 'TDS' },
-                { chartId: 'myChartLux', label: 'Lux' },
-                { chartId: 'myChartHumidity', label: 'Humidity' },
-                { chartId: 'myChartTemperature', label: 'Temperature' },
-                { chartId: 'myChartHeatIndex', label: 'Heat Index' },
-                { chartId: 'myChartCorrected_PPM', label: 'Corrected PPM' },
-                { chartId: 'myChartDustDensity', label: 'Dust Density' },
-                { chartId: 'myChartRunningAverage', label: 'Running Average' },
-                { chartId: 'myChartNitrogen', label: 'Nitrogen' },
-                { chartId: 'myChartPhosphorus', label: 'Phosphorus' },
-                { chartId: 'myChartPotassium', label: 'Potassium' },
-                { chartId: 'myChartpHsoil', label: 'pH Soil' },
-                { chartId: 'myChartEC', label: 'EC' },
-                { chartId: 'myChartTempsoil', label: 'Soil Temperature' },
-                { chartId: 'myChartHumsoil', label: 'Soil Humidity' },
-            ];
+			<script>
+					
+					const chartVariables = [
+							{ chartId: 'myChartPH', label: 'pH' },
+							{ chartId: 'myChartTDS', label: 'TDS' },
+							{ chartId: 'myChartLux', label: 'Lux' },
+							{ chartId: 'myChartHumidity', label: 'Humidity' },
+							{ chartId: 'myChartTemperature', label: 'Temperature' },
+							{ chartId: 'myChartHeatIndex', label: 'Heat Index' },
+							{ chartId: 'myChartCorrected_PPM', label: 'Corrected PPM' },
+							{ chartId: 'myChartDustDensity', label: 'Dust Density' },
+							{ chartId: 'myChartRunningAverage', label: 'Running Average' },
+							{ chartId: 'myChartNitrogen', label: 'Nitrogen' },
+							{ chartId: 'myChartPhosphorus', label: 'Phosphorus' },
+							{ chartId: 'myChartPotassium', label: 'Potassium' },
+							{ chartId: 'myChartpHsoil', label: 'pH Soil' },
+							{ chartId: 'myChartEC', label: 'EC' },
+							{ chartId: 'myChartTempsoil', label: 'Soil Temperature' },
+							{ chartId: 'myChartHumsoil', label: 'Soil Humidity' },
+					];
 
-            function createChartDiv(variable) {
-                const chartDiv = document.createElement('div');
-                chartDiv.classList.add('col-xl-6', 'col-lg-6');
-                chartDiv.innerHTML = `
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">${variable.label}</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="chart-area">
-                                <canvas id="canva${variable.chartId}"></canvas>
-                            </div>
-                            <hr>
-                        </div>
-                    </div>
-                `;
-                return chartDiv;
-            }
+					function createChartDiv(variable) {
+							const chartDiv = document.createElement('div');
+							chartDiv.classList.add('col-xl-6', 'col-lg-6');
+							chartDiv.innerHTML = `
+									<div class="card shadow mb-4">
+											<div class="card-header py-3">
+													<h6 class="m-0 font-weight-bold text-primary">${variable.label}</h6>
+											</div>
+											<div class="card-body">
+													<div class="chart-area">
+															<canvas id="canva${variable.chartId}"></canvas>
+													</div>
+													<hr>
+											</div>
+									</div>
+							`;
+							return chartDiv;
+					}
 
-            const contentContainer = document.getElementById('contentContainer');
-            chartVariables.forEach(variable => {
-                const chartDiv = createChartDiv(variable);
-                contentContainer.appendChild(chartDiv);
-            });
-        </script>
+					const contentContainer = document.getElementById('contentContainer');
+					chartVariables.forEach(variable => {
+							const chartDiv = createChartDiv(variable);
+							contentContainer.appendChild(chartDiv);
+					});
+			</script>
 
       <script type="module">
+				// import annotationPlugin from 'chart';
         let myChartPH;
         let myChartTDS;
         let myChartLux;
@@ -414,15 +418,43 @@
                         }
                     },
                     plugins: {
+											autocolors:false,
                         annotation: {
                             annotations: {
+																background: {
+																	type: 'box',
+																	display:mode1&&mode2,
+																	// xScaleID: 'x-axis-0',
+																	// yScaleID: 'y-axis-0',
+																	yMin: standardValue1, // Adjust this value to the minimum y-value for the filled area
+																	yMax: standardValue2, // Adjust this value to the maximum y-value for the filled area
+																	backgroundColor: 'rgba(0, 255, 0, 0.2)', // Green background color
+																	borderWidth: 0,
+																},
                                 line1: {
-                                type: 'line',
-                                yMin: 1,
-                                yMax: 1,
-                                borderColor: 'rgb(255, 99, 132)',
-                                borderWidth: 2,
-                                }
+																	type: 'line',
+																	display: mode1,
+																	scaleID: 'y',
+																	value: standardValue1,
+																	borderColor: 'green', // Change line color to green
+																	borderWidth: 4,
+																	label: {
+																		enabled:true,
+																		content: 'name1', // Label text for line1
+																	},
+																},
+																line2: {
+																	type: 'line',
+																	display: mode2,
+																	scaleID: 'y',
+																	value: standardValue2,
+																	borderColor: 'green', // Change line color to green
+																	borderWidth: 4,
+																	label: {
+																		enabled: true,
+																		content: name2, // Label text for line2
+																	},
+																}
                             }
                         }
                     }
@@ -484,7 +516,7 @@
                 myChartHumsoil = createChart(chartDataHumsoil, myChartHumsoil, 'myChartHumsoil', 'Soil Humidity', '%', 60, 80, true, true, 'mature tree', 'seedling and harvest');
         }
         fetchDataAndUpdateCharts();
-        setInterval(fetchDataAndUpdateCharts, 7000); 
+        setInterval(fetchDataAndUpdateCharts, 4000); 
       </script>
 </body>
 
