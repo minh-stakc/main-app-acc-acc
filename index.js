@@ -16,7 +16,9 @@ const APIkey = "d19a1eac74129a54df64265af607e433";
 
 const expressWs = require("express-ws");
 expressWs(app);
-const clientConnections = [];
+let esp;
+let web_manual;
+// const clientConnections = [];
 
 let PH = [];
 let TDS = [];
@@ -61,7 +63,7 @@ app.use(
   cors({
     credentials: true,
     // origin: ["http://localhost:4000"],
-    origin: ['http://automaticcropcaretaker.com'],
+    origin: ["http://automaticcropcaretaker.com"],
   })
 );
 app.set("view engine", "ejs");
@@ -70,11 +72,36 @@ app.use(express.static(path.join(__dirname, "public")));
 // WebSocket route for communication with ESP8266
 app.ws("/ws", (ws, req) => {
   console.log("WebSocket connection established");
-  clientConnections.push(ws);
+  // clientConnections.push(ws);
+  const pingInterval = setInterval(() => {
+    try {
+      ws.send(JSON.stringify({ type: "ping" }));
+    } catch (error) {
+      console.log("Send ping error:", error);
+    }
+  }, 30000); //sending a ping every 10 seconds
+
+  // Start a ping interval for each connection
   ws.on("message", (msg) => {
     console.log("Message from client:", msg);
     const data = JSON.parse(msg);
-    if (data["type"] == "sensors_data") {
+    if (data["type"] === "pong") {
+      console.log("Pong received from client");
+      return;
+    }
+    if (data["type"] === "connection") {
+      if (data["data"] === "ESP8266") {
+        esp = ws;
+      }
+      //  else if (data["data"] === "website/manual") {
+      //   web_manual = ws;
+      // }
+      return;
+    }
+    if (data["type"].indexOf("control") != -1) {
+      esp.send(JSON.stringify(data));
+    }
+    if (data["type"] === "sensors_data") {
       latestPH = data["PH"];
       latestTDS = data["TDS"];
       latestLux = data["Lux"];
@@ -124,7 +151,17 @@ app.ws("/ws", (ws, req) => {
       if (Tempsoil.length > 20) Tempsoil.shift();
       if (Humsoil.length > 20) Humsoil.shift();
     }
-    sendEventToClients(data);
+    // web_manual.send(JSON.stringify(data));
+    //sendEventToClients(data);
+  });
+
+  ws.on("close", () => {
+    clearInterval(pingInterval);
+    console.log("WebSocket connection closed");
+    // const index = clientConnections.indexOf(ws);
+    // if (index > -1) {
+    //   clientConnections.splice(index, 1);
+    // }
   });
 });
 
@@ -340,11 +377,9 @@ app.post("/api/getPredictionData", async (req, res) => {
         author: userData.id,
       }).catch((err) => {
         console.error(err);
-        res
-          .status(500)
-          .json({
-            error: "An error occurred while creating the test document",
-          });
+        res.status(500).json({
+          error: "An error occurred while creating the test document",
+        });
       });
       res.json(data);
     });
