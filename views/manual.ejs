@@ -390,6 +390,10 @@
 
             socket.addEventListener("message", (event) => {
                 console.log("Message received from server:", event.data);
+                const data = JSON.parse(event.data);
+                if (data["type"] === "ping") {
+                    socket.send(JSON.stringify({ type: "pong" }));
+                }
             });
 
             togglePumpButton.addEventListener('click', () => {
@@ -435,26 +439,6 @@
                 updateStatusColor(rightMotorStatus, 'Stopped');
                 motorState = 'Stopped';
             });
-
-            // cylinderUpButton.addEventListener('click', () => {
-            //     if (cylinderExtended) {
-            //         // Retract the cylinder
-            //         retractCylinder();
-            //     } else {
-            //         // Extend the cylinder and wait for 20 seconds
-            //         extendCylinder();
-            //         setTimeout(() => {
-            //             // After 20 seconds, retract the cylinder
-            //             retractCylinder();
-            //             cylinderStatus.textContent = 'Retracted';
-            //             cylinderExtended = false;
-            //         }, 20000); // 20 seconds in milliseconds
-            //     }
-
-            //     // Toggle the cylinder status
-            //     cylinderExtended = !cylinderExtended;
-            //     cylinderStatus.textContent = cylinderExtended ? 'Extended' : 'Retracted';
-            // });
 
             cylinderUpButton.addEventListener('click', () => {
                 // Drive base forward
