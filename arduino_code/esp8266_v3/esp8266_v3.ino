@@ -16,16 +16,18 @@ const char *password2 = "66668888";
 const char *ssid3 = "WiFi Poop";
 const char *password3 = "CircularShit";
 
-// const char* ssids[] = {ssid, ssid2, ssid3};
-// const char* passwords[] = {password, password2, password3};
-
 const char *serverAddress = "automaticcropcaretaker.com";
 const int serverPort = 80;
+
+//testing with local-host
+// const char *serverAddress = "192.168.100.155";
+// const int serverPort = 4000;
+
 const char *serverURL = "/ws";
 const char *serverProtocol = "arduino";
 
-// const char *serverAddress = "192.168.100.99";
-// const int serverPort = 4000;
+bool needBooting = true;
+
 
 void setupWiFi() {
   WiFi.mode(WIFI_STA);
@@ -51,12 +53,15 @@ void setupWebSocket() {
 void setup() {
   Serial.begin(9600);
   senderSerial.begin(9600);
-  Serial.println("\n[SETUP] BOOT");
-  setupWiFi();
-  setupWebSocket();
 }
 
 void loop() {
+  if (needBooting == true) {
+    Serial.println("\n[SETUP] BOOT");
+    setupWiFi();
+    setupWebSocket();
+    needBooting = false;
+  }
   webSocket.loop();
   if (senderSerial.available()) {
     receiveDataAndSendToServer();
@@ -71,7 +76,7 @@ void receiveDataAndSendToServer() {
   String data = senderSerial.readStringUntil('\n');  // Read the JSON string from Serial
   // Serial.println(data);
   // Check if the received data starts with "Sensors_data:"
-  if (data.startsWith("Sensors_data:")) {
+  if (data.startsWith("[MEGA] Sensors_data:")) {
     // Extract the JSON part from the input string
     String jsonData = data.substring(data.indexOf('{'));
     Serial.print(jsonData);
@@ -82,18 +87,26 @@ void receiveDataAndSendToServer() {
 void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
   switch (type) {
     case WStype_DISCONNECTED:
-      Serial.println("WebSocket disconnected");
+      Serial.println("[WSc] Disconnected");
       break;
     case WStype_CONNECTED:
-      Serial.println("WebSocket connected");
-      sendDataToServer((String)"{\"type\":\"connection\",\"data\":\"ESP8266\"}");
+      Serial.println("[WSc] Connected");
+      sendDataToServer((String) "{\"type\":\"connection\",\"data\":\"ESP8266\"}");
       break;
     case WStype_TEXT:
-      Serial.print("Received message: ");
+      Serial.print("[WSc] Received message:");
       String data = (char *)payload;
       Serial.println(data);
+      DynamicJsonDocument doc(64);  // Adjust buffer size as needed
+      deserializeJson(doc, data);
+      // Check if received message is a ping
+      String eventType = doc["type"];
+      if (eventType.indexOf("ping") != -1) {
+        // If it's a ping, send a pong back
+        webSocket.sendTXT("{\"type\":\"pong\"}");
+      }
       //"{"type":"control/both_motors"}" <- This is sample data from server
-      if(data.substring(10).startsWith("control")){
+      if (eventType.indexOf("control") != -1) {
         senderSerial.println(data);
       }
       break;

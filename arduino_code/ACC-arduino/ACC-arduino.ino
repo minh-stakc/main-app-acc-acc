@@ -164,6 +164,9 @@ void setup() {
 }
 
 void loop() {
+  if(needReset == true){
+    delay(3000);
+  }
   readAndSendDataToESP();
   if (Serial3.available()) {
     receiveDataAndRunCommands();
@@ -264,7 +267,7 @@ void readAndSendDataToESP() {
 
     // Send the JSON string over Serial3 to the ESP8266
     Serial3.print("Sensors_data: " + jsonString + "\n");
-    Serial.print("Sensors_data: " + jsonString + "\n");
+    // Serial.print("Sensors_data: " + jsonString + "\n");
   }
 }
 
@@ -508,7 +511,7 @@ void led2(int direction) {
 }
 
 int toSpeed(int percent) {
-  Serial.println(round(abs((float)percent) / 100 * 255));
+  // Serial.println(round(abs((float)percent) / 100 * 255));
   return round(abs((float)percent) / 100 * 255);
 }
 
