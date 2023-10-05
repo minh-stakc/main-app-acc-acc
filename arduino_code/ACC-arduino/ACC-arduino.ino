@@ -1,7 +1,6 @@
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
 #include "MQ135.h"
-
 #include <GP2YDustSensor.h>
 #include "DFRobot_PH.h"
 #include <EEPROM.h>
@@ -71,7 +70,7 @@ DHT dht = DHT(DHTPIN, DHTTYPE);
 GP2YDustSensor dustSensor(GP2YDustSensorType::GP2Y1014AU0F, SHARP_LED_PIN, SHARP_VO_PIN);
 
 static int left_servo_state, right_servo_state, servos_state, motors_state, pump_state, led_state, cylinder_state;  //= direction
-static int left_motor_speed, right_motor_speed;
+static int left_motor_speed, right_motor_speed, read_soil_state;
 
 uint16_t data[6];
 float ph;
@@ -81,12 +80,12 @@ float EC;
 float result;
 
 void setup() {
+  delay(3000);
   // debug serial
   Serial.begin(9600);
   // sender serial
   Serial3.begin(9600);
   // arduino uno/npk value receiver serial
-  // Serial2.begin(9600);
   // esp8266 commands receiver serial
   Serial3.begin(9600);
 
@@ -164,12 +163,25 @@ void setup() {
 }
 
 void loop() {
-  if(needReset == true){
-    delay(3000);
+  // readAndSendDataToESP();
+  // if (Serial3.available()) {
+  //   receiveDataAndRunCommands();
+  // }
+  test_buttons();
+}
+
+void test_buttons(){
+  if(digitalRead(SLeftUpButton) == 0){
+    Serial.println("clicked up button of left servo");
   }
-  readAndSendDataToESP();
-  if (Serial3.available()) {
-    receiveDataAndRunCommands();
+  else if(digitalRead(SLeftDownButton) == 0){
+    Serial.println("clicked down button of left servo");
+  }
+  else if(digitalRead(SRightUpButton) == 0){
+    Serial.println("clicked up button of right servo");
+  }
+  else if(digitalRead(SRightDownButton) == 0){
+    Serial.println("clicked down button of right servo");
   }
 }
 
@@ -293,27 +305,7 @@ void receiveDataAndRunCommands() {
     } else if (commandType == "cylinder") {
       cylinder(direction);
     } else if (commandType == "pump") {
-      if (direction == 1) {
-        bothServos(direction);  // both servos move to 90 deg for 3 secs, then pump starts
-        delay(3000);
-        pump(direction);
-      } else {
-        pump(direction);  // pump ends then both sevos move back down to 0 deg
-        if (led_state == 0) {
-          bothServos(direction);
-        }
-      }
-    } else if (commandType == "both_leds") {
-      if (direction == 1) {
-        bothServos(direction);  // both servos move to 90 deg for 3 secs, then led starts
-        delay(3000);
-        bothLeds(direction);
-      } else {
-        bothLeds(direction);  // led ends then both sevos move back down to 0 deg
-        if (pump_state == 0) {
-          bothServos(direction);
-        }
-      }
+      pump(direction);
     } else if (commandType == "led1") {
       led1(direction);
     } else if (commandType == "led2") {
@@ -336,13 +328,13 @@ void leftMotor(int direction) {
   if (direction == 1) {
     digitalWrite(MLeftR_PWM, HIGH);  // clockwise
     digitalWrite(MLeftL_PWM, LOW);
-    analogWrite(MLeftRL_EN, 80);
+    analogWrite(MLeftRL_EN, toSpeed(26));
   } else if (direction == 0) {
     analogWrite(MLeftRL_EN, 0);
   } else {
     digitalWrite(MLeftR_PWM, LOW);  // counter-clockwise
     digitalWrite(MLeftL_PWM, HIGH);
-    analogWrite(MLeftRL_EN, 80);
+    analogWrite(MLeftRL_EN, toSpeed(26));
   }
 }
 
@@ -350,13 +342,13 @@ void rightMotor(int direction) {
   if (direction == 1) {
     digitalWrite(MRightR_PWM, HIGH);  // clockwise
     digitalWrite(MRightL_PWM, LOW);
-    analogWrite(MRightRL_EN, 80);
+    analogWrite(MRightRL_EN, toSpeed(20));
   } else if (direction == 0) {
     analogWrite(MRightRL_EN, 0);
   } else {
     digitalWrite(MRightL_PWM, HIGH);  // counter-clockwise
     digitalWrite(MRightR_PWM, LOW);
-    analogWrite(MRightRL_EN, 80);
+    analogWrite(MRightRL_EN, toSpeed(20));
   }
 }
 
@@ -403,16 +395,15 @@ void bothMotorsWithSpeed(int direction, int speed1, int speed2) {
 
 void cylinder(int direction) {
   cylinder_state = direction;
-  Serial.println("cylinder");
   if (direction == 1) {
-    digitalWrite(CylR_PWM, HIGH);  // extend
-    digitalWrite(CylL_PWM, LOW);
+    digitalWrite(CylL_PWM, HIGH);
+    digitalWrite(CylR_PWM, LOW);  // retract
     analogWrite(CylRL_EN, 255);
   } else if (direction == 0) {
     analogWrite(CylRL_EN, 0);
   } else {
-    digitalWrite(CylR_PWM, LOW);  // retract
-    digitalWrite(CylL_PWM, HIGH);
+    digitalWrite(CylR_PWM, HIGH);  // extend
+    digitalWrite(CylL_PWM, LOW);
     analogWrite(CylRL_EN, 255);
   }
 }
@@ -429,41 +420,55 @@ void pump(int direction) {
 void leftServo(int direction) {
   if (direction == 1)  // go up
   {
-    digitalWrite(SLeftR_PWM, HIGH);  // clockwise
-    digitalWrite(SLeftL_PWM, LOW);
-    analogWrite(SLeftRL_EN, 210);
-    while (digitalRead(SLeftUpButton) == 1) {
-      delay(1);
-    }
-    analogWrite(SLeftRL_EN, 50);
-  } else  // go down
-  {
     digitalWrite(SLeftL_PWM, HIGH);  // counter-clockwise
     digitalWrite(SLeftR_PWM, LOW);
-    analogWrite(SLeftRL_EN, 210);
-    while (digitalRead(SLeftDownButton) == 1) {
-      delay(1);
+    analogWrite(SLeftRL_EN, toSpeed(80));
+    while (true) {
+      if (digitalRead(SLeftUpButton) == 0) {
+        analogWrite(SLeftRL_EN, 0);
+        break;
+      }
     }
+  } else if (direction == 1)  // go down
+  {
+    digitalWrite(SLeftR_PWM, HIGH);  // clockwise
+    digitalWrite(SLeftL_PWM, LOW);
+    analogWrite(SLeftRL_EN, toSpeed(80));
+    while (true) {
+      if (digitalRead(SLeftDownButton) == 0) {
+        analogWrite(SLeftRL_EN, toSpeed(15));
+        break;
+      }
+    }
+  } else {
     analogWrite(SLeftRL_EN, 0);
   }
 }
 
 void rightServo(int direction) {
-  if (direction == 1) {
-    digitalWrite(SRightL_PWM, HIGH);  // clockwise
-    digitalWrite(SRightR_PWM, LOW);
-    analogWrite(SRightRL_EN, 210);
-    while (digitalRead(SRightUpButton) == 1) {
-      delay(1);
-    }
-    analogWrite(SRightRL_EN, 50);
-  } else {
+  if (direction == 1)  // go up
+  {
     digitalWrite(SRightR_PWM, HIGH);  // counter-clockwise
     digitalWrite(SRightL_PWM, LOW);
-    analogWrite(SRightRL_EN, 210);
-    while (digitalRead(SRightDownButton) == 1) {
-      delay(1);
+    analogWrite(SRightRL_EN, toSpeed(80));
+    while (true) {
+      if (digitalRead(SRightUpButton) == 0) {
+        analogWrite(SRightRL_EN, 0);
+        break;
+      }
     }
+  } else if (direction == 1)  // go down
+  {
+    digitalWrite(SRightL_PWM, HIGH);  // clockwise
+    digitalWrite(SRightR_PWM, LOW);
+    analogWrite(SRightRL_EN, toSpeed(80));
+    while (true) {
+      if (digitalRead(SRightDownButton) == 0) {
+        analogWrite(SRightRL_EN, toSpeed(15));
+        break;
+      }
+    }
+  } else {
     analogWrite(SRightRL_EN, 0);
   }
 }
@@ -471,26 +476,21 @@ void rightServo(int direction) {
 void bothServos(int direction) {  //1: Up, 0:Down
   servos_state = direction;
   bothMotorsWithSpeed(0, left_motor_speed, right_motor_speed);
-  if (direction == 1) {
-    leftServo(1);
-    rightServo(1);
-  } else {
-    leftServo(0);
-    rightServo(0);
-  }
+  leftServo(direction);
+  rightServo(direction);
   bothMotorsWithSpeed(motors_state, left_motor_speed, right_motor_speed);
 }
 
-void bothLeds(int direction) {  // On, Off
-  led_state = direction;
-  if (direction == 1) {
-    digitalWrite(PIN_RELAY_LED_1, LOW);
-    digitalWrite(PIN_RELAY_LED_2, LOW);
-  } else {
-    digitalWrite(PIN_RELAY_LED_1, HIGH);
-    digitalWrite(PIN_RELAY_LED_2, HIGH);
-  }
-}
+// void bothLeds(int direction) {  // On, Off
+//   led_state = direction;
+//   if (direction == 1) {
+//     digitalWrite(PIN_RELAY_LED_1, LOW);
+//     digitalWrite(PIN_RELAY_LED_2, LOW);
+//   } else {
+//     digitalWrite(PIN_RELAY_LED_1, HIGH);
+//     digitalWrite(PIN_RELAY_LED_2, HIGH);
+//   }
+// }
 
 void led1(int direction) {
   led_state = direction;
@@ -511,7 +511,6 @@ void led2(int direction) {
 }
 
 int toSpeed(int percent) {
-  // Serial.println(round(abs((float)percent) / 100 * 255));
   return round(abs((float)percent) / 100 * 255);
 }
 
@@ -627,9 +626,10 @@ void cylinderToReadSoil() {
   delay(1000);
   cylinder(-1);
   delay(7000);
+  cylinder(0);
   readSoil(300000);
   cylinder(1);
-  delay(5000);
+  delay(7000);
   cylinder(0);
   delay(1000);
   bothMotorsWithSpeed(motors_state, left_motor_speed, right_motor_speed);

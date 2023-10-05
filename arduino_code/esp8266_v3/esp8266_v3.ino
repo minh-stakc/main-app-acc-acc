@@ -9,19 +9,23 @@ ESP8266WiFiMulti WiFiMulti;
 // SoftwareSerial senderSerial(D1, D2);
 SoftwareSerial senderSerial(D5, D6);
 
-const char *ssid = "American Study";
-const char *password = "66668888";
-const char *ssid2 = "AmericanStudy T1";
-const char *password2 = "66668888";
-const char *ssid3 = "WiFi Poop";
-const char *password3 = "CircularShit";
+// const char *ssid = "American Study";
+// const char *password = "66668888";
+// const char *ssid2 = "AmericanStudy T1";
+// const char *password2 = "66668888";
+// const char *ssid3 = "WiFi Poop";
+// const char *password3 = "CircularShit";
+
+const int numOfWifis = 4;
+const char *ssids[numOfWifis] = {"HB4", "American Study", "AmericanStudy T1", "WiFi Poop"};
+const char *passwords[numOfWifis] = {"oanhslhk", "66668888", "66668888", "CircularShit"};
+
+//testing with local-host
+// const char *serverAddress = "192.168.0.103";
+// const int serverPort = 4000;
 
 const char *serverAddress = "automaticcropcaretaker.com";
 const int serverPort = 80;
-
-//testing with local-host
-// const char *serverAddress = "192.168.100.155";
-// const int serverPort = 4000;
 
 const char *serverURL = "/ws";
 const char *serverProtocol = "arduino";
@@ -31,9 +35,13 @@ bool needBooting = true;
 
 void setupWiFi() {
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP(ssid, password);
-  WiFiMulti.addAP(ssid2, password2);
-  WiFiMulti.addAP(ssid3, password3);
+  // WiFiMulti.addAP(ssid, password);
+  // WiFiMulti.addAP(ssid2, password2);
+  // WiFiMulti.addAP(ssid3, password3);
+  int i = 0;
+  for(i = 0; i < numOfWifis; i++){
+    WiFiMulti.addAP(ssids[i], passwords[i]);
+  }
 
   while (WiFiMulti.run() != WL_CONNECTED) {
     delay(1000);
@@ -51,6 +59,7 @@ void setupWebSocket() {
 }
 
 void setup() {
+  delay(3000);
   Serial.begin(9600);
   senderSerial.begin(9600);
 }
@@ -97,16 +106,16 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
       Serial.print("[WSc] Received message:");
       String data = (char *)payload;
       Serial.println(data);
-      DynamicJsonDocument doc(64);  // Adjust buffer size as needed
-      deserializeJson(doc, data);
+      // DynamicJsonDocument doc(64);  // Adjust buffer size as needed
+      // deserializeJson(doc, data);
+      // String eventType = doc["type"];
+
       // Check if received message is a ping
-      String eventType = doc["type"];
-      if (eventType.indexOf("ping") != -1) {
-        // If it's a ping, send a pong back
-        webSocket.sendTXT("{\"type\":\"pong\"}");
-      }
       //"{"type":"control/both_motors"}" <- This is sample data from server
-      if (eventType.indexOf("control") != -1) {
+      if (data.indexOf("\"type\":\"ping\"") != -1) {
+        // If it's a ping, send a pong back
+        webSocket.sendTXT("{\"type\":\"pong\",\"from\":\"ESP8266\"}");
+      }else {
         senderSerial.println(data);
       }
       break;

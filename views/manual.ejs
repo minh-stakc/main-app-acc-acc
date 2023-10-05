@@ -352,6 +352,17 @@
         <!-- End of Content Wrapper -->
     </div>
     <!-- End of Page Wrapper -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -392,7 +403,7 @@
                 console.log("Message received from server:", event.data);
                 const data = JSON.parse(event.data);
                 if (data["type"] === "ping") {
-                    socket.send(JSON.stringify({ type: "pong" }));
+                    socket.send(JSON.stringify({ type: "pong", from: "website/manual" }));
                 }
             });
 
@@ -404,11 +415,11 @@
                     // Turn on the pump
                     turnOnPump();
                 }
-
                 // Toggle the pump status
                 pumpOn = !pumpOn;
                 pumpStatus.innerHTML = pumpOn ? 'ON' : 'OFF';
             });
+
             forwardButton.addEventListener('click', () => {
                 // Drive base forward
                 driveForward();

@@ -17,7 +17,7 @@ const APIkey = "d19a1eac74129a54df64265af607e433";
 const expressWs = require("express-ws");
 expressWs(app);
 let esp;
-let web_manual;
+// let web_manual;
 // const clientConnections = [];
 
 let PH = [];
@@ -79,14 +79,14 @@ app.ws("/ws", (ws, req) => {
     } catch (error) {
       console.log("Send ping error:", error);
     }
-  }, 30000); //sending a ping every 10 seconds
+  }, 20000); //sending a ping every 20 seconds
 
   // Start a ping interval for each connection
   ws.on("message", (msg) => {
     console.log("Message from client:", msg);
     const data = JSON.parse(msg);
     if (data["type"] === "pong") {
-      console.log("Pong received from client");
+      console.log(`Pong received from ${data["from"]}`);
       return;
     }
     if (data["type"] === "connection") {
@@ -151,8 +151,6 @@ app.ws("/ws", (ws, req) => {
       if (Tempsoil.length > 20) Tempsoil.shift();
       if (Humsoil.length > 20) Humsoil.shift();
     }
-    // web_manual.send(JSON.stringify(data));
-    //sendEventToClients(data);
   });
 
   ws.on("close", () => {
@@ -165,11 +163,11 @@ app.ws("/ws", (ws, req) => {
   });
 });
 
-function sendEventToClients(eventData) {
-  for (const connection of clientConnections) {
-    connection.send(JSON.stringify(eventData));
-  }
-}
+// function sendEventToClients(eventData) {
+//   for (const connection of clientConnections) {
+//     connection.send(JSON.stringify(eventData));
+//   }
+// }
 
 //register
 app.get("/", (req, res) => {
